@@ -1,4 +1,4 @@
-package sample;
+package vault.login;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,7 +72,7 @@ public class LoginController implements Initializable {
     {
         try
         {
-            URL url = new URL("http://127.0.0.1:8080/api/v1/registration/");
+            URL url = new URL("http://localhost:8080/api/users/login");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
             con.setRequestMethod("POST");
@@ -96,6 +96,8 @@ public class LoginController implements Initializable {
                 }
                 System.out.println(response.toString());
             }
+
+            goToHome();
         }
         catch(Exception e)
         {
@@ -108,18 +110,35 @@ public class LoginController implements Initializable {
 
     public void quitButtonOnAction(ActionEvent event)
     {
-        Stage stage = (Stage) quitButton.getScene().getWindow();
-        stage.close();
+        goToHome();
+//        Stage stage = (Stage) quitButton.getScene().getWindow();
+//        stage.close();
     }
 
     public void registerButtonOnAction(ActionEvent event)
     {
         try
         {
-            Parent root = FXMLLoader.load(getClass().getResource("register.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../register/register.fxml"));
             Stage registerStage = new Stage();
             registerStage.initStyle(StageStyle.UNDECORATED);
             registerStage.setScene(new Scene(root, 780, 500));
+            registerStage.show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    private void goToHome() {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
+            Stage registerStage = new Stage();
+            registerStage.initStyle(StageStyle.UNDECORATED);
+            registerStage.setScene(new Scene(root, 900, 600));
             registerStage.show();
         }
         catch (Exception e)

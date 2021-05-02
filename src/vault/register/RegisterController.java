@@ -1,8 +1,11 @@
-package sample;
+package vault.register;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -67,18 +71,20 @@ public class RegisterController  implements Initializable {
             registerMessageLabel.setText("Password isn't entered");
         else if(registerConfirmPasswordField.getText().isBlank())
             registerMessageLabel.setText("Password isn't entered");
-        else if(registerPasswordField.getText().equals(registerConfirmPasswordField.getText()))
+        else if(!registerPasswordField.getText().equals(registerConfirmPasswordField.getText()))
             registerMessageLabel.setText("Password do not match");
         else
+        {
             registerMessageLabel.setText("Registering...");
             registerUser();
+        }
     }
 
     private void registerUser()
     {
         try
         {
-            URL url = new URL("http://127.0.0.1:8080/api/v1/registration/");
+            URL url = new URL("http://localhost:8080/api/users/register");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
             con.setRequestMethod("POST");
@@ -103,11 +109,27 @@ public class RegisterController  implements Initializable {
                 System.out.println(response.toString());
             }
 
-
+            goToHome();
         }
         catch(Exception e)
         {
             e.getStackTrace();
+            e.getCause();
+        }
+    }
+
+    private void goToHome() {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
+            Stage registerStage = new Stage();
+            registerStage.initStyle(StageStyle.UNDECORATED);
+            registerStage.setScene(new Scene(root, 900, 600));
+            registerStage.show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
             e.getCause();
         }
     }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Hyper-Secure-Application-Vault.iml" filepath="$PROJECT_DIR$/Hyper-Secure-Application-Vault.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hyper-Secure-Vault.iml" filepath="$PROJECT_DIR$/Hyper-Secure-Vault.iml" />
     </modules>
   </component>
 </project>
