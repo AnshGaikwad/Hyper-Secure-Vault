@@ -47,12 +47,19 @@ public class AlertBox {
         alert.setContentText(content);
 
         ButtonType viewButton = new ButtonType("View");
+        ButtonType uploadButton = new ButtonType("Upload");
         ButtonType cancelButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(viewButton, cancelButton);
+        alert.getButtonTypes().setAll(viewButton, uploadButton, cancelButton);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == viewButton){
             Desktop.getDesktop().open(file);
+        }
+
+        Optional<ButtonType> uploadResult = alert.showAndWait();
+        if (uploadResult.isPresent() && uploadResult.get() == uploadButton){
+            System.out.println("Here");
+
         }
     }
 
