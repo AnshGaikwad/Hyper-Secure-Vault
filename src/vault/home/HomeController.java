@@ -1,10 +1,8 @@
 package vault.home;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import vault.exceptions.CannotEncodeException;
 import vault.exceptions.UnsupportedImageTypeException;
 import vault.exceptions.CannotDecodeException;
@@ -31,11 +29,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
@@ -98,6 +103,30 @@ public class HomeController implements Initializable {
     private String password;
     // Clipboard
     private Clipboard systemClipboard = Clipboard.getSystemClipboard();
+
+    //AES
+
+    @FXML
+    private TextField textfield;
+    @FXML
+    private Label label1;
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
+    @FXML
+    private Button button3;
+    @FXML
+    private Button button4;
+    @FXML
+    private Label label2;
+
+
+    private File file;
+    private final FileChooser fileChooser = new FileChooser();
+    final private static int mBlocksize;
+    private static SecretKey secretKey;
+    private static String res;
 
     /**
      * Sets the cover image from the <code>JavaFX FileChooser</code> and adds it to the {@link #coverImageView}
@@ -610,12 +639,186 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Logo
         File lockFile = new File("images/logo.jpg");
         Image lockImage = new Image(lockFile.toURI().toString());
         logoImageView.setImage(lockImage);
 
+        // RSA Defaults
         p_field.setText("71");
         q_field.setText("67");
         e_field.setText("281");
+
+        // AES
+        textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+
+        // button1.setOnAction(event -> {textfield.setText("DGDHDJ");});
+    }
+
+    // AES File Encrypter
+    static {
+        mBlocksize = 128;
+        secretKey = null;
+        res="0";
+        try {
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            secretKey = kgen.generateKey();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    protected void handle1(ActionEvent event) {
+
+        chooseFile();
+        if (file==null){return;}
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save encrypted File");
+        fileChooser.setInitialDirectory(new File(file.getParent()));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter((getFileExtension(file).toUpperCase()), "*."+getFileExtension(file)),
+                new FileChooser.ExtensionFilter("All files", "*.*")
+        );
+
+
+            /*//Randomize number with Random From security
+            SecureRandom srand = new SecureRandom();
+            long randLong = (srand.nextInt()%10000000);*/
+        File outfile = fileChooser.showSaveDialog(new Stage());
+        if (outfile==null){return;}
+        /*AES Encryption*/
+        try{
+            InputStream fis = new FileInputStream(file);
+            int read = 0;
+            if (!outfile.exists()) {
+                outfile.createNewFile();
+            }
+            FileOutputStream encfos = new FileOutputStream(outfile);
+            Cipher encipher = Cipher.getInstance("AES");
+            encipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
+            byte[] block = new byte[mBlocksize];
+            while ((read = fis.read(block,0,mBlocksize)) != -1) {
+                cipheoutstream.write(block,0, read);
+            }
+            cipheoutstream.close();
+            fis.close();
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handle2 (ActionEvent event){
+        //AES Crypto decrypted
+        try{
+            chooseFile();
+            if (file==null){
+
+                return;}
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save decrypted File");
+            fileChooser.setInitialDirectory(new File(file.getParent()));
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter((getFileExtension(file).toUpperCase()), "*."+getFileExtension(file)),
+                    new FileChooser.ExtensionFilter("All files", "*.*")
+            );
+            File outfile = fileChooser.showSaveDialog(new Stage());
+            if (outfile==null){ label1.setText("Choose File to Decrypt");return;}
+            InputStream fis = new FileInputStream(file);
+            int read = 0;
+            if (!outfile.exists())
+                outfile.createNewFile();
+
+            FileOutputStream encfos = new FileOutputStream(outfile);
+
+            Cipher encipher = Cipher.getInstance("AES");
+            encipher.init(Cipher.DECRYPT_MODE, secretKey);
+            CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
+
+            byte[] block = new byte[mBlocksize];
+            while ((read = fis.read(block,0,mBlocksize)) != -1) {
+                cipheoutstream.write(block,0, read);
+            }
+            cipheoutstream.close();
+            fis.close();
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void handle3(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save KEY");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter(("KEY"), "*.key")
+            );
+            File outfile = fileChooser.showSaveDialog(new Stage());
+            if (outfile == null) {
+                return;
+            }
+            int read = 0;
+            if (!outfile.exists()) {
+                outfile.createNewFile();
+            }
+
+            FileOutputStream encfos = new FileOutputStream(outfile);
+
+            encfos.write(secretKey.getEncoded());
+
+            encfos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void chooseFile(){
+        file = fileChooser.showOpenDialog(new Stage());
+    }
+
+    public void handle4(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose KEY");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter(("KEY"), "*.key")
+            );
+            File infile = fileChooser.showOpenDialog(new Stage());
+            if (infile == null) {
+                return;
+            }
+            Path path = Paths.get(infile.getAbsolutePath());
+            byte[] encodedKey = Files.readAllBytes(path);
+            secretKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
+            textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static String getFileExtension(File file) {
+        String fileName = file.getName();
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            return fileName.substring(fileName.lastIndexOf(".")+1);
+        else return "";
+    }
+
+    public void genereteNewKey(ActionEvent event) {
+        try {
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            secretKey = kgen.generateKey();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
     }
 }

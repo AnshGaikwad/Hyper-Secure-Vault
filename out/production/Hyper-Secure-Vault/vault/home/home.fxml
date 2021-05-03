@@ -524,41 +524,25 @@
             </Tab>
             <Tab text="AES File Encryption">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="456.0" prefWidth="852.0" spacing="24.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label alignment="CENTER" style="&#10;" text="Steganographic Image" textAlignment="CENTER" textFill="#7f7f7f" wrapText="false">
-                                 <font>
-                                    <Font size="18.0" fx:id="x1111" />
-                                 </font>
-                                 <padding>
-                                    <Insets top="12.0" />
-                                 </padding>
-                              </Label>
-                              <VBox fx:id="steganographicImagePane11" alignment="CENTER" VBox.vgrow="ALWAYS">
-                                 <VBox.margin>
-                                    <Insets bottom="12.0" left="24.0" right="24.0" />
-                                 </VBox.margin>
-                                 <children>
-                                    <ImageView fx:id="steganographicImageView11" fitHeight="400.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
-                           <children>
-                              <Button fx:id="decodeImage11" disable="true" mnemonicParsing="false" onAction="#decodeImage" text="Decode">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
+                        <Label fx:id="label1" layoutX="330.0" layoutY="36.0" text="AES 128 Bit">
+                           <font>
+                              <Font size="48.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="gnereteButton" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#genereteNewKey" prefHeight="56.0" prefWidth="134.0" text="Generate" />
+                        <TextField fx:id="textfield" alignment="CENTER" layoutX="187.0" layoutY="131.0" prefHeight="62.0" prefWidth="536.0">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="button2" layoutX="492.0" layoutY="398.0" mnemonicParsing="false" onAction="#handle2" prefHeight="50.0" prefWidth="230.0" text="Decrypt" />
+                        <Button fx:id="button1" layoutX="201.0" layoutY="398.0" mnemonicParsing="false" onAction="#handle1" prefHeight="50.0" prefWidth="240.0" text="Encrypt File" />
+                        <Button fx:id="button4" layoutX="527.0" layoutY="244.0" mnemonicParsing="false" onAction="#handle4" prefHeight="42.0" prefWidth="187.0" text="Use Key" />
+                        <Button fx:id="button3" layoutX="211.0" layoutY="244.0" mnemonicParsing="false" onAction="#handle3" prefHeight="42.0" prefWidth="207.0" text="Save Key" />
+                     </children></AnchorPane>
+               </content></Tab>
          </tabs>
       </TabPane>
    </children>
