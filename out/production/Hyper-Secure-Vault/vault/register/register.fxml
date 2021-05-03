@@ -9,79 +9,78 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="780.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.register.RegisterController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.register.RegisterController">
    <children>
-      <AnchorPane prefHeight="125.0" prefWidth="780.0" style="-fx-background-color: #93eaf5;">
+      <AnchorPane prefHeight="151.0" prefWidth="900.0" style="-fx-background-color: #93eaf5;">
          <children>
-            <ImageView fx:id="registerImage" fitHeight="125.0" fitWidth="122.0" layoutX="93.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="registerImage" fitHeight="151.0" fitWidth="144.0" layoutX="71.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/user.jpg" />
+                  <Image url="@../../../images/user.jpg" />
                </image>
             </ImageView>
-            <Label layoutX="284.0" layoutY="33.0" prefHeight="78.0" prefWidth="285.0" text="User Registration">
+            <Label layoutX="266.0" layoutY="36.0" prefHeight="78.0" prefWidth="367.0" text="User Registration">
                <font>
-                  <Font size="36.0" />
+                  <Font size="48.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="95.0" layoutY="173.0" text="First Name">
+      <Label layoutX="93.0" layoutY="203.0" text="First Name">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="registerFirstNameTextField" layoutX="286.0" layoutY="168.0" prefHeight="30.0" prefWidth="410.0" promptText="First Name">
+      <TextField fx:id="registerFirstNameTextField" layoutX="286.0" layoutY="198.0" prefHeight="37.0" prefWidth="524.0" promptText="First Name">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="95.0" layoutY="222.0" text="Last Name">
+      <Label layoutX="95.0" layoutY="250.0" text="Last Name">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="registerLastNameTextField" layoutX="286.0" layoutY="217.0" prefHeight="30.0" prefWidth="410.0" promptText="Last Name">
+      <TextField fx:id="registerLastNameTextField" layoutX="286.0" layoutY="245.0" prefHeight="37.0" prefWidth="524.0" promptText="Last Name">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="95.0" layoutY="269.0" text="Email">
+      <Label layoutX="98.0" layoutY="297.0" text="Email">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="registerEmailTextField" layoutX="286.0" layoutY="264.0" prefHeight="30.0" prefWidth="410.0" promptText="Email">
+      <TextField fx:id="registerEmailTextField" layoutX="286.0" layoutY="292.0" prefHeight="37.0" prefWidth="524.0" promptText="Email">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="95.0" layoutY="316.0" text="Password">
+      <Label layoutX="95.0" layoutY="342.0" text="Organization Id">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="95.0" layoutY="361.0" text="Confirm Password">
+      <Label layoutX="99.0" layoutY="387.0" text="Password">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="registerRegisterButton" layoutX="95.0" layoutY="440.0" mnemonicParsing="false" onAction="#registerRegisterButtonOnAction" prefHeight="32.0" prefWidth="286.0" style="-fx-background-color: #1f1c51;" text="Register" textFill="WHITE">
+      <Button fx:id="registerRegisterButton" layoutX="157.0" layoutY="511.0" mnemonicParsing="false" onAction="#registerRegisterButtonOnAction" prefHeight="44.0" prefWidth="286.0" style="-fx-background-color: #1f1c51;" text="Register" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="registerBackButton" layoutX="416.0" layoutY="440.0" mnemonicParsing="false" onAction="#registerBackButtonOnAction" prefHeight="32.0" prefWidth="286.0" style="-fx-background-color: #1f1c51;" text="Back" textFill="WHITE">
+      <Button fx:id="registerBackButton" layoutX="469.0" layoutY="511.0" mnemonicParsing="false" onAction="#registerBackButtonOnAction" prefHeight="44.0" prefWidth="286.0" style="-fx-background-color: #1f1c51;" text="Back" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <PasswordField fx:id="registerPasswordField" layoutX="286.0" layoutY="311.0" prefHeight="30.0" prefWidth="410.0" promptText="Password">
+      <PasswordField fx:id="registerOrganizationField" layoutX="286.0" layoutY="337.0" prefHeight="37.0" prefWidth="524.0" promptText="Organization Id">
          <font>
             <Font size="16.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="registerConfirmPasswordField" layoutX="286.0" layoutY="356.0" prefHeight="30.0" prefWidth="410.0" promptText="Confirm Password">
+      <PasswordField fx:id="registerPasswordField" layoutX="286.0" layoutY="382.0" prefHeight="37.0" prefWidth="524.0" promptText="Password">
          <font>
             <Font size="16.0" />
          </font>
@@ -91,5 +90,15 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <Label layoutX="98.0" layoutY="433.0" text="Confirm Password">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="registerConfirmPasswordField1" layoutX="286.0" layoutY="428.0" prefHeight="37.0" prefWidth="524.0" promptText="Confirm Password">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </PasswordField>
    </children>
 </AnchorPane>

@@ -1,5 +1,10 @@
 package vault.home;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import vault.exceptions.CannotEncodeException;
 import vault.exceptions.UnsupportedImageTypeException;
 import vault.exceptions.CannotDecodeException;
@@ -27,10 +32,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.math.BigInteger;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ResourceBundle;
 
-public class HomeController {
+public class HomeController implements Initializable {
 
     // JavaFX Components
     @FXML
@@ -57,6 +65,32 @@ public class HomeController {
     private ToggleGroup messagePixelsPerByte, documentPixelsPerByte, pixelsPerPixel;
     @FXML
     private HBox messagePixelsPerByteWrapper, documentPixelsPerByteWrapper;
+    @FXML
+    private ImageView logoImageView;
+
+    // RSA Cipher
+    private static int p;
+    private static int q;
+    private static int e;
+
+    @FXML
+    private Label n_label;
+    @FXML
+    private Label f_label;
+    @FXML
+    private Label d_label;
+    @FXML
+    private Button en_button;
+    @FXML
+    private Button de_button;
+    @FXML
+    private TextArea text_field;
+    @FXML
+    private TextField p_field;
+    @FXML
+    private TextField q_field;
+    @FXML
+    private TextField e_field;
 
     // Files;
     private File coverImage, secretImage, secretDocument, steganographicImage, tempFile;
@@ -438,4 +472,150 @@ public class HomeController {
         System.exit(0);
     }
 
+    // RSA Cipher
+    @FXML
+    void encyptMethod(ActionEvent event) {
+        BigInteger m, n;
+        char[] arr;
+
+        if (text_field.getText().equals("")) {
+            text_field.requestFocus();
+        } else if (p_field.getText().equals("")) {
+            p_field.requestFocus();
+        } else if (q_field.getText().equals("")) {
+            q_field.requestFocus();
+        } else if (e_field.getText().equals("")) {
+            e_field.requestFocus();
+        } else {
+            p = Integer.parseInt(p_field.getText());
+            q = Integer.parseInt(q_field.getText());
+            e = Integer.parseInt(e_field.getText());
+
+            n = new BigInteger(String.valueOf(p * q));
+
+            arr = text_field.getText().toCharArray();
+            text_field.clear();
+
+            for (int i = 0; i < arr.length; i++) {
+                m = new BigInteger(String.valueOf((int) arr[i]));
+                text_field.setText(text_field.getText() + (char) (m.pow(e).mod(n).intValue() + 20));
+            }
+
+            n_label.setText("n = " + p * q);
+            f_label.setText("φ(n) = " + EulersTotientFunction());
+            d_label.setText("d = " + ExtendedEuclidAlgorithm());
+
+        }
+    }
+
+    @FXML
+    void decyptMethod(ActionEvent event) {
+        BigInteger c, n;
+        char[] arr;
+
+        if (text_field.getText().equals("")) {
+            text_field.requestFocus();
+        } else if (p_field.getText().equals("")) {
+            p_field.requestFocus();
+        } else if (q_field.getText().equals("")) {
+            q_field.requestFocus();
+        } else if (e_field.getText().equals("")) {
+            e_field.requestFocus();
+        } else {
+            p = Integer.parseInt(p_field.getText());
+            q = Integer.parseInt(q_field.getText());
+            e = Integer.parseInt(e_field.getText());
+
+            int d = ExtendedEuclidAlgorithm();
+
+            n = new BigInteger(String.valueOf(p * q));
+
+            arr = text_field.getText().trim().toCharArray();
+            text_field.clear();
+
+            for (int i = 0; i < arr.length; i++) {
+                c = new BigInteger(String.valueOf((int) arr[i] - 20));
+                text_field.setText(text_field.getText() + (char) ((c.pow(d).mod(n)).intValue()));
+            }
+
+            n_label.setText("n = " + p * q);
+            f_label.setText("φ(n) = " + EulersTotientFunction());
+            d_label.setText("d = " + ExtendedEuclidAlgorithm());
+
+        }
+
+    }
+
+    // Euler's totient function counts the positive integers up to a given integer n
+    // that are relatively prime to n.
+    public static int EulersTotientFunction() {
+
+        return (p - 1) * (q - 1);
+    }
+
+    // Extended Euclidean algorithm for finding 'd' value
+    public static int ExtendedEuclidAlgorithm() {
+
+        int r0, r1, s0, s1, t0, t1, q, a, b, f;
+        f = EulersTotientFunction();
+
+        if (e > f) {
+            a = e;
+            b = f;
+        } else {
+            a = f;
+            b = e;
+        }
+
+        r0 = a;
+        s0 = 1;
+        t0 = 0;
+        r1 = b;
+        s1 = 0;
+        t1 = 1;
+
+        while (true) {
+            int remainder;
+
+            q = r0 / r1;
+
+            remainder = r0 - (q * r1);
+            r0 = r1;
+            r1 = remainder;
+            if (r1 == 0)
+                break;
+
+            remainder = s0 - (q * s1);
+            s0 = s1;
+            s1 = remainder;
+
+            remainder = t0 - (q * t1);
+            t0 = t1;
+            t1 = remainder;
+        }
+        int endValue = e > f ? s1 : t1;
+
+        // If 'endValue' is a negative value, it should be converted to positiv
+        int k = 1;
+        while (endValue < 0) {
+            if (e > f)
+                endValue = s1 + k * b;
+            else
+                endValue = t1 - (-k * a);
+            k++;
+        }
+        return endValue;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        File lockFile = new File("images/logo.jpg");
+        Image lockImage = new Image(lockFile.toURI().toString());
+        logoImageView.setImage(lockImage);
+
+        p_field.setText("71");
+        q_field.setText("67");
+        e_field.setText("281");
+    }
 }

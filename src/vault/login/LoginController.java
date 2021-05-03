@@ -122,7 +122,7 @@ public class LoginController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource("../register/register.fxml"));
             Stage registerStage = new Stage();
             registerStage.initStyle(StageStyle.UNDECORATED);
-            registerStage.setScene(new Scene(root, 780, 500));
+            registerStage.setScene(new Scene(root, 900, 600));
             registerStage.show();
         }
         catch (Exception e)

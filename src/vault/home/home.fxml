@@ -10,13 +10,14 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -25,7 +26,7 @@
 
 <VBox fx:id="root" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.home.HomeController">
    <children>
-      <MenuBar fx:id="menubar" VBox.vgrow="NEVER">
+      <MenuBar fx:id="menubar" prefHeight="0.0" prefWidth="900.0" style="-fx-background-color: #93eaf5;" VBox.vgrow="NEVER">
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
@@ -37,6 +38,13 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="quitApp" mnemonicParsing="false" onAction="#quitApp" text="Quit" />
                </items>
+               <graphic>
+                  <ImageView fx:id="logoImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/logo.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Menu>
             <Menu fx:id="editMenu" disable="true" mnemonicParsing="false" onShowing="#showingEditMenu" text="Edit">
                <items>
@@ -52,33 +60,41 @@
                   <MenuItem fx:id="deselectMenu" mnemonicParsing="false" onAction="#deselect" text="Descelect" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Theme">
+            <Menu mnemonicParsing="false" text="Contact">
                <items>
-                  <RadioMenuItem fx:id="lightTheme" mnemonicParsing="false" onAction="#setTheme" selected="true" text="Light">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="theme" />
-                     </toggleGroup>
-                  </RadioMenuItem>
-                  <RadioMenuItem fx:id="darkTheme" mnemonicParsing="false" onAction="#setTheme" text="Dark" toggleGroup="$theme" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem fx:id="aboutPage" mnemonicParsing="false" onAction="#showAboutPage" text="About StegIt" />
+                  <MenuItem fx:id="email" mnemonicParsing="false" onAction="#showAboutPage" text="Email" />
+                  <MenuItem fx:id="github" mnemonicParsing="false" onAction="#showAboutPage" text="Github" />
+                  <MenuItem fx:id="linkedin" mnemonicParsing="false" onAction="#showAboutPage" text="LinkedIn" />
+                  <MenuItem fx:id="medium" mnemonicParsing="false" onAction="#showAboutPage" text="Medium" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
       <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
          <tabs>
-            <Tab text="Your Cloud" />
-            <Tab text="Encode Image">
+            <Tab text="Your Cloud">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="550.0" prefWidth="900.0">
+                           <children>
+                              <Label text="Work In Progress">
+                                 <font>
+                                    <Font size="48.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </content></Tab>
+            <Tab text="Encode Here">
                <content>
                   <SplitPane dividerPositions="0.49955555555555553" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0">
                      <items>
                         <VBox alignment="TOP_CENTER" spacing="12.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Cover Image" textFill="#7f7f7f" wrapText="false">
+                              <Label alignment="CENTER" contentDisplay="CENTER" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Your Image" textFill="#7f7f7f" wrapText="false">
                                  <font>
                                     <Font name="System Bold" size="18.0" fx:id="x1" />
                                  </font>
@@ -255,7 +271,7 @@
                                     </Tab>
                                     <Tab fx:id="secretImageTab" disable="true" text="Hide Image">
                                        <content>
-                                          <VBox alignment="CENTER" prefHeight="400.0" prefWidth="446.0" spacing="12.0">
+                                          <VBox alignment="CENTER" prefHeight="454.0" prefWidth="448.0" spacing="12.0">
                                              <children>
                                                 <Label text="Secret Image" textFill="#7f7f7f">
                                                    <VBox.margin>
@@ -328,7 +344,7 @@
                   </SplitPane>
                </content>
             </Tab>
-            <Tab text="Decode Image">
+            <Tab text="Decode Here">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
@@ -355,6 +371,184 @@
                         <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
                            <children>
                               <Button fx:id="decodeImage" disable="true" mnemonicParsing="false" onAction="#decodeImage" text="Decode">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="RSA Cipher">
+               <content>
+                  <AnchorPane prefHeight="513.0" prefWidth="459.0">
+                     <children>
+                        <VBox layoutX="29.0" layoutY="255.0" prefHeight="137.0" prefWidth="167.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="29.0">
+                           <children>
+                              <Label fx:id="n_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="n = ">
+                                 <font>
+                                    <Font name="Times New Roman" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="f_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="φ(n) = ">
+                                 <font>
+                                    <Font name="Times New Roman" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="d_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="d = ">
+                                 <font>
+                                    <Font name="Times New Roman" size="19.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </VBox>
+                        <Button fx:id="en_button" layoutX="289.0" layoutY="433.0" onAction="#encyptMethod" prefHeight="57.0" prefWidth="234.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Encryption" AnchorPane.leftAnchor="289.0">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
+                        <Button fx:id="de_button" layoutX="567.0" layoutY="432.0" onAction="#decyptMethod" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Decryption" AnchorPane.leftAnchor="567.0">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
+                        <TextArea fx:id="text_field" layoutX="247.0" layoutY="90.0" prefHeight="301.0" prefWidth="614.0" promptText="Enter Text">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </TextArea>
+                        <VBox layoutX="30.0" layoutY="85.0" prefHeight="146.0" prefWidth="166.0" style="-fx-border-color: black;">
+                           <children>
+                              <HBox prefHeight="56.0" prefWidth="120.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="50.0" text="p = ">
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="p_field" prefHeight="28.0" prefWidth="64.0">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="56.0" prefWidth="120.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="50.0" text="q = ">
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="q_field" prefHeight="35.0" prefWidth="64.0">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="3.0" prefWidth="165.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="50.0" text="e = ">
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="e_field" prefHeight="35.0" prefWidth="64.0">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Times New Roman" size="19.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Label layoutX="195.0" layoutY="14.0" text="You must enter the 'p' and 'q' Relatively Prime numbers and the 'e' public key value">
+                           <font>
+                              <Font name="System Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="142.0" layoutY="42.0" text="Algorithm calculates 'n', 'φ(n)' and 'd' private key values then encrypts and decrypts the text you enter">
+                           <font>
+                              <Font name="System Italic" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="AES File Encryption">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="456.0" prefWidth="852.0" spacing="24.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label alignment="CENTER" style="&#10;" text="Steganographic Image" textAlignment="CENTER" textFill="#7f7f7f" wrapText="false">
+                                 <font>
+                                    <Font size="18.0" fx:id="x1111" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="12.0" />
+                                 </padding>
+                              </Label>
+                              <VBox fx:id="steganographicImagePane11" alignment="CENTER" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="12.0" left="24.0" right="24.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <ImageView fx:id="steganographicImageView11" fitHeight="400.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+                           <children>
+                              <Button fx:id="decodeImage11" disable="true" mnemonicParsing="false" onAction="#decodeImage" text="Decode">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

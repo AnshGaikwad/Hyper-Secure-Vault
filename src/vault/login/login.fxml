@@ -10,50 +10,50 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="780.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.login.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.login.LoginController">
    <left>
       <AnchorPane prefHeight="407.0" prefWidth="230.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="brandingImageView" fitHeight="406.5" fitWidth="351.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="brandingImageView" fitHeight="492.0" fitWidth="421.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/image.png" />
+                  <Image url="@../../../images/image.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="500.0" prefWidth="437.0" style="-fx-background-color: #93eaf5;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #93eaf5;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="lockImageView" fitHeight="207.0" fitWidth="215.0" layoutX="102.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="lockImageView" fitHeight="257.0" fitWidth="305.0" layoutX="122.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/logo.jpg" />
+                  <Image url="@../../../images/logo.jpg" />
                </image>
             </ImageView>
-            <Label layoutX="42.0" layoutY="215.0" prefHeight="26.0" text="Email">
+            <Label layoutX="76.0" layoutY="260.0" prefHeight="26.0" text="Email">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="emailTextField" layoutX="118.0" layoutY="213.0" prefHeight="32.0" prefWidth="286.0" promptText="Email">
+            <TextField fx:id="emailTextField" layoutX="154.0" layoutY="256.0" prefHeight="32.0" prefWidth="286.0" promptText="Email">
                <font>
                   <Font size="16.0" />
                </font></TextField>
-            <Label layoutX="26.0" layoutY="263.0" prefHeight="26.0" text="Password">
+            <Label layoutX="60.0" layoutY="327.0" prefHeight="26.0" text="Password">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordField" layoutX="118.0" layoutY="261.0" prefHeight="32.0" prefWidth="286.0" promptText="Password">
+            <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="323.0" prefHeight="32.0" prefWidth="286.0" promptText="Password">
                <font>
                   <Font size="16.0" />
                </font></PasswordField>
-            <Button fx:id="loginButton" layoutX="28.0" layoutY="381.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="32.0" prefWidth="377.0" style="-fx-background-color: #1f1c51;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="60.0" layoutY="457.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="32.0" prefWidth="377.0" style="-fx-background-color: #1f1c51;" text="Login" textFill="WHITE">
                <font>
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button fx:id="registerButton" layoutX="28.0" layoutY="426.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="32.0" prefWidth="183.0" style="-fx-background-color: #1f1c51;" text="Register" textFill="WHITE">
+            <Button fx:id="registerButton" layoutX="61.0" layoutY="502.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="32.0" prefWidth="186.0" style="-fx-background-color: #1f1c51;" text="Register" textFill="WHITE">
                <font>
                   <Font size="13.0" />
                </font>
@@ -63,7 +63,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="quitButton" layoutX="222.0" layoutY="426.0" mnemonicParsing="false" onAction="#quitButtonOnAction" prefHeight="32.0" prefWidth="183.0" style="-fx-background-color: #1f1c51;" text="Quit" textFill="WHITE">
+            <Button fx:id="quitButton" layoutX="249.0" layoutY="502.0" mnemonicParsing="false" onAction="#quitButtonOnAction" prefHeight="32.0" prefWidth="190.0" style="-fx-background-color: #1f1c51;" text="Quit" textFill="WHITE">
                <font>
                   <Font size="13.0" />
                </font>
