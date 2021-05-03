@@ -2,6 +2,12 @@ package vault.home;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import vault.exceptions.CannotEncodeException;
 import vault.exceptions.UnsupportedImageTypeException;
@@ -31,8 +37,10 @@ import javafx.stage.FileChooser;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -50,8 +58,6 @@ public class HomeController implements Initializable {
     private Menu editMenu;
     @FXML
     private MenuItem newSecretDocument, newSecretImage, cutMenu, copyMenu, pasteMenu, undoMenu, redoMenu, selectAllMenu, deselectMenu, deleteMenu;
-    @FXML
-    private RadioMenuItem darkTheme, lightTheme;
     @FXML
     private ImageView secretImageView, coverImageView, steganographicImageView;
     @FXML
@@ -483,17 +489,58 @@ public class HomeController implements Initializable {
         else { undoMenu.setDisable(true); }
     }
 
-    /** Handles switching between themes for the main scene. */
-    public void setTheme(){
-        if(darkTheme.isSelected())
-            root.getScene().getStylesheets().add(getClass().getResource("resources/modena_dark.css").toExternalForm());
-        if(lightTheme.isSelected())
-            root.getScene().getStylesheets().remove(getClass().getResource("resources/modena_dark.css").toExternalForm());
+    /** Displays the About Page. */
+    public void openBackendSource() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad/Hyper-Secure-Vault-Backend").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /** Displays the About Page. */
-    public void showAboutPage() {
-        AboutPage.display();
+    public void openSource() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad/Hyper-Secure-Vault/").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    /** Displays the About Page. */
+    public void sendEmail() {
+        try {
+            Desktop.getDesktop().browse(new URL("mailto:anshyg2002@gmail.com").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    /** Displays the About Page. */
+    public void openGithub() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    /** Displays the About Page. */
+    public void openLinkedIn() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://www.linkedin.com/in/anshgaikwad/").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    /** Displays the About Page. */
+    public void openMedium() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://medium.com/@anshyg2002").toURI());
+        } catch (IOException | URISyntaxException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /** Quits the app. */

@@ -60,12 +60,18 @@
                   <MenuItem fx:id="deselectMenu" mnemonicParsing="false" onAction="#deselect" text="Descelect" />
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <MenuItem fx:id="email1" mnemonicParsing="false" onAction="#openSource" text="Source Code" />
+                  <MenuItem fx:id="github1" mnemonicParsing="false" onAction="#openBackendSource" text="Backend Code" />
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Contact">
                <items>
-                  <MenuItem fx:id="email" mnemonicParsing="false" onAction="#showAboutPage" text="Email" />
-                  <MenuItem fx:id="github" mnemonicParsing="false" onAction="#showAboutPage" text="Github" />
-                  <MenuItem fx:id="linkedin" mnemonicParsing="false" onAction="#showAboutPage" text="LinkedIn" />
-                  <MenuItem fx:id="medium" mnemonicParsing="false" onAction="#showAboutPage" text="Medium" />
+                  <MenuItem fx:id="email" mnemonicParsing="false" onAction="#sendEmail" text="Email" />
+                  <MenuItem fx:id="github" mnemonicParsing="false" onAction="#openGithub" text="Github" />
+                  <MenuItem fx:id="linkedin" mnemonicParsing="false" onAction="#openLinkedIn" text="LinkedIn" />
+                  <MenuItem fx:id="medium" mnemonicParsing="false" onAction="#openMedium" text="Medium" />
                </items>
             </Menu>
          </menus>
