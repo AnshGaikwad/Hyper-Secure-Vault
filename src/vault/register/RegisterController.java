@@ -25,23 +25,15 @@ import java.util.ResourceBundle;
 
 public class RegisterController  implements Initializable {
 
+    // JavaFx Components
     @FXML
     private ImageView registerImage;
 
     @FXML
-    private TextField registerFirstNameTextField;
+    private TextField registerFirstNameTextField, registerLastNameTextField, registerEmailTextField;
 
     @FXML
-    private TextField registerLastNameTextField;
-
-    @FXML
-    private TextField registerEmailTextField;
-
-    @FXML
-    private PasswordField registerPasswordField;
-
-    @FXML
-    private PasswordField registerConfirmPasswordField;
+    private PasswordField registerPasswordField, registerConfirmPasswordField;
 
     @FXML
     private Label registerMessageLabel;
@@ -49,15 +41,20 @@ public class RegisterController  implements Initializable {
     @FXML
     private Button registerBackButton;
 
+    // Initializable => Executes on start
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
         File userFile = new File("images/user.jpg");
         Image userImage = new Image(userFile.toURI().toString());
         registerImage.setImage(userImage);
     }
 
+    // When register button is clicked
+    // Validates input and goes to register user
     public void registerRegisterButtonOnAction()
     {
+        // Validating input
         if(registerFirstNameTextField.getText().isBlank())
             registerMessageLabel.setText("First name isn't entered");
         else if(registerLastNameTextField.getText().isBlank())
@@ -73,10 +70,14 @@ public class RegisterController  implements Initializable {
         else
         {
             registerMessageLabel.setText("Registering...");
+
+            // Validated, Registering!
             registerUser();
         }
     }
 
+    // Function to register user using postgres database
+    // Sends a POST request to backend service API with all details
     private void registerUser()
     {
         try
@@ -91,21 +92,23 @@ public class RegisterController  implements Initializable {
 
             String jsonInputString = "{\"firstName\":\"" + registerFirstNameTextField.getText() + "\",\"lastName\":\"" +registerLastNameTextField.getText()+ "\",\"email\":\"" +registerEmailTextField.getText()+ "\",\"password\":\"" +registerPasswordField.getText()+ "\"}";
 
-            try(OutputStream os = con.getOutputStream()) {
+            try(OutputStream os = con.getOutputStream())
+            {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)))
+            {
                 StringBuilder response = new StringBuilder();
                 String responseLine;
-                while ((responseLine = br.readLine()) != null) {
+                while ((responseLine = br.readLine()) != null)
+                {
                     response.append(responseLine.trim());
                 }
                 System.out.println(response.toString());
             }
-
             goToHome();
         }
         catch(Exception e)
@@ -115,7 +118,9 @@ public class RegisterController  implements Initializable {
         }
     }
 
-    private void goToHome() {
+    // Go to home page after registration
+    private void goToHome()
+    {
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
@@ -131,6 +136,7 @@ public class RegisterController  implements Initializable {
         }
     }
 
+    // If back button pressed
     public void registerBackButtonOnAction()
     {
         Stage stage = (Stage) registerBackButton.getScene().getWindow();
