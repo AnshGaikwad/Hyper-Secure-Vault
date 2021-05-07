@@ -54,7 +54,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.ResourceBundle;
 
-public class HomeController implements Initializable {
+public class HomeController implements Initializable
+{
 
     // JavaFx Components
 
@@ -111,10 +112,13 @@ public class HomeController implements Initializable {
     private static int e;
 
     // AES
-    private File file;
-    private final FileChooser fileChooser = new FileChooser();
+    private File aesFile;
+    private final FileChooser aesFileChooser = new FileChooser();
     final private static int mBlocksize;
     private static SecretKey secretKey;
+
+
+    // Steganography
 
     // Set cover image from Filechooser and add it to the coverImageView
     // Also enable steganographic controls which are disbled
@@ -712,21 +716,32 @@ public class HomeController implements Initializable {
         System.exit(0);
     }
 
-    // RSA Cipher
-    @FXML
+    // RSA
+
+    // RSA Encryprion Method
     void encyptMethod(ActionEvent event) {
+
         BigInteger m, n;
         char[] arr;
 
-        if (rsaTextField.getText().equals("")) {
+        if (rsaTextField.getText().equals(""))
+        {
             rsaTextField.requestFocus();
-        } else if (pField.getText().equals("")) {
+        }
+        else if (pField.getText().equals(""))
+        {
             pField.requestFocus();
-        } else if (qField.getText().equals("")) {
+        }
+        else if (qField.getText().equals(""))
+        {
             qField.requestFocus();
-        } else if (eField.getText().equals("")) {
+        }
+        else if (eField.getText().equals(""))
+        {
             eField.requestFocus();
-        } else {
+        }
+        else
+        {
             p = Integer.parseInt(pField.getText());
             q = Integer.parseInt(qField.getText());
             e = Integer.parseInt(eField.getText());
@@ -736,32 +751,41 @@ public class HomeController implements Initializable {
             arr = rsaTextField.getText().toCharArray();
             rsaTextField.clear();
 
-            for (int i = 0; i < arr.length; i++) {
-                m = new BigInteger(String.valueOf((int) arr[i]));
+            // RSA Encryption
+            for (char c : arr) {
+                m = new BigInteger(String.valueOf((int) c));
                 rsaTextField.setText(rsaTextField.getText() + (char) (m.pow(e).mod(n).intValue() + 20));
             }
 
             nLabel.setText("n = " + p * q);
-            fLabel.setText("φ(n) = " + EulersTotientFunction());
+            fLabel.setText("φ(n) = " + eulersTotientFunction());
             dLabel.setText("d = " + ExtendedEuclidAlgorithm());
-
         }
     }
 
-    @FXML
+    // RSA Decryption Method
     void decyptMethod(ActionEvent event) {
         BigInteger c, n;
         char[] arr;
 
-        if (rsaTextField.getText().equals("")) {
+        if (rsaTextField.getText().equals(""))
+        {
             rsaTextField.requestFocus();
-        } else if (pField.getText().equals("")) {
+        }
+        else if (pField.getText().equals(""))
+        {
             pField.requestFocus();
-        } else if (qField.getText().equals("")) {
+        }
+        else if (qField.getText().equals(""))
+        {
             qField.requestFocus();
-        } else if (eField.getText().equals("")) {
+        }
+        else if (eField.getText().equals(""))
+        {
             eField.requestFocus();
-        } else {
+        }
+        else
+        {
             p = Integer.parseInt(pField.getText());
             q = Integer.parseInt(qField.getText());
             e = Integer.parseInt(eField.getText());
@@ -773,13 +797,14 @@ public class HomeController implements Initializable {
             arr = rsaTextField.getText().trim().toCharArray();
             rsaTextField.clear();
 
-            for (int i = 0; i < arr.length; i++) {
-                c = new BigInteger(String.valueOf((int) arr[i] - 20));
+            for (char value : arr)
+            {
+                c = new BigInteger(String.valueOf((int) value - 20));
                 rsaTextField.setText(rsaTextField.getText() + (char) ((c.pow(d).mod(n)).intValue()));
             }
 
             nLabel.setText("n = " + p * q);
-            fLabel.setText("φ(n) = " + EulersTotientFunction());
+            fLabel.setText("φ(n) = " + eulersTotientFunction());
             dLabel.setText("d = " + ExtendedEuclidAlgorithm());
 
         }
@@ -788,7 +813,7 @@ public class HomeController implements Initializable {
 
     // Euler's totient function counts the positive integers up to a given integer n
     // that are relatively prime to n.
-    public static int EulersTotientFunction() {
+    public static int eulersTotientFunction() {
 
         return (p - 1) * (q - 1);
     }
@@ -797,12 +822,15 @@ public class HomeController implements Initializable {
     public static int ExtendedEuclidAlgorithm() {
 
         int r0, r1, s0, s1, t0, t1, q, a, b, f;
-        f = EulersTotientFunction();
+        f = eulersTotientFunction();
 
-        if (e > f) {
+        if (e > f)
+        {
             a = e;
             b = f;
-        } else {
+        }
+        else
+        {
             a = f;
             b = e;
         }
@@ -814,7 +842,8 @@ public class HomeController implements Initializable {
         s1 = 0;
         t1 = 1;
 
-        while (true) {
+        while (true)
+        {
             int remainder;
 
             q = r0 / r1;
@@ -833,11 +862,13 @@ public class HomeController implements Initializable {
             t0 = t1;
             t1 = remainder;
         }
+
         int endValue = e > f ? s1 : t1;
 
-        // If 'endValue' is a negative value, it should be converted to positiv
+        // If 'endValue' is a negative value, it should be converted to positive
         int k = 1;
-        while (endValue < 0) {
+        while (endValue < 0)
+        {
             if (e > f)
                 endValue = s1 + k * b;
             else
@@ -860,51 +891,64 @@ public class HomeController implements Initializable {
         qField.setText("67");
         eField.setText("281");
 
-        // AES
+        // AES Default Key Generated
         aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
-
-        // button1.setOnAction(event -> {textfield.setText("DGDHDJ");});
     }
 
-    // AES File Encrypter
-    static {
+    // AES
+
+    // Static Variables
+    static
+    {
         mBlocksize = 128;
         secretKey = null;
-        String res = "0";
-        try {
+        try
+        {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
             secretKey = kgen.generateKey();
-
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e)
+        {
             e.printStackTrace();
         }
     }
 
+    // Encrypt a File using AES Encryption
+    protected void encryptFile(ActionEvent event)
+    {
+        // Init
+        initChooseFile();
 
-    @FXML
-    protected void handle1(ActionEvent event) {
+        // If file object null
+        if (aesFile == null)
+        {
+            return;
+        }
 
-        chooseFile();
-        if (file==null){return;}
+        // Choose a file
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save encrypted File");
-        fileChooser.setInitialDirectory(new File(file.getParent()));
+        fileChooser.setInitialDirectory(new File(aesFile.getParent()));
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter((getFileExtension(file).toUpperCase()), "*."+getFileExtension(file)),
+                new FileChooser.ExtensionFilter((getFileExtension(aesFile).toUpperCase()), "*."+getFileExtension(aesFile)),
                 new FileChooser.ExtensionFilter("All files", "*.*")
         );
 
 
-            /*//Randomize number with Random From security
-            SecureRandom srand = new SecureRandom();
-            long randLong = (srand.nextInt()%10000000);*/
+        // Output File (Encrypted File)
         File outfile = fileChooser.showSaveDialog(new Stage());
-        if (outfile==null){return;}
-        /*AES Encryption*/
-        try{
-            InputStream fis = new FileInputStream(file);
+        if (outfile==null)
+        {
+            return;
+        }
+
+        // AES Encryption
+        try
+        {
+            InputStream fis = new FileInputStream(aesFile);
             int read = 0;
-            if (!outfile.exists()) {
+            if (!outfile.exists())
+            {
                 outfile.createNewFile();
             }
             FileOutputStream encfos = new FileOutputStream(outfile);
@@ -912,38 +956,56 @@ public class HomeController implements Initializable {
             encipher.init(Cipher.ENCRYPT_MODE, secretKey);
             CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
             byte[] block = new byte[mBlocksize];
-            while ((read = fis.read(block,0,mBlocksize)) != -1) {
+            while ((read = fis.read(block,0,mBlocksize)) != -1)
+            {
                 cipheoutstream.write(block,0, read);
             }
             cipheoutstream.close();
             fis.close();
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException e) {
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    protected void handle2 (ActionEvent event){
-        //AES Crypto decrypted
-        try{
-            chooseFile();
-            if (file==null){
+    // AES File Decryption
+    protected void decryptFile (ActionEvent event)
+    {
+        try
+        {
+            // Init
+            initChooseFile();
 
-                return;}
+            // If file object is null
+            if (aesFile==null)
+            {
+                return;
+            }
+
+            // Select a File
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save decrypted File");
-            fileChooser.setInitialDirectory(new File(file.getParent()));
+            fileChooser.setInitialDirectory(new File(aesFile.getParent()));
             fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter((getFileExtension(file).toUpperCase()), "*."+getFileExtension(file)),
+                    new FileChooser.ExtensionFilter((getFileExtension(aesFile).toUpperCase()), "*."+getFileExtension(aesFile)),
                     new FileChooser.ExtensionFilter("All files", "*.*")
             );
+
+            // Output File
             File outfile = fileChooser.showSaveDialog(new Stage());
-            if (outfile==null){ aesLabel.setText("Choose File to Decrypt");return;}
-            InputStream fis = new FileInputStream(file);
+            if (outfile==null)
+            {
+                aesLabel.setText("Choose File to Decrypt");
+                return;
+            }
+
+            InputStream fis = new FileInputStream(aesFile);
             int read = 0;
             if (!outfile.exists())
                 outfile.createNewFile();
 
+            // Start Decryprion
             FileOutputStream encfos = new FileOutputStream(outfile);
 
             Cipher encipher = Cipher.getInstance("AES");
@@ -951,88 +1013,118 @@ public class HomeController implements Initializable {
             CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
 
             byte[] block = new byte[mBlocksize];
-            while ((read = fis.read(block,0,mBlocksize)) != -1) {
+            while ((read = fis.read(block,0,mBlocksize)) != -1)
+            {
                 cipheoutstream.write(block,0, read);
             }
+
             cipheoutstream.close();
             fis.close();
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException | InvalidKeyException e)
+        {
             e.printStackTrace();
         }
-
     }
 
-
-    public void handle3(ActionEvent event) {
-        try {
+    // Save the Key locally
+    public void saveKey(ActionEvent event)
+    {
+        try
+        {
+            // Choose saving location
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save KEY");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter(("KEY"), "*.key")
             );
             File outfile = fileChooser.showSaveDialog(new Stage());
-            if (outfile == null) {
+
+            // if null, do nothing
+            if (outfile == null)
+            {
                 return;
             }
-            int read = 0;
-            if (!outfile.exists()) {
+
+            // Save File
+            if (!outfile.exists())
+            {
                 outfile.createNewFile();
             }
 
             FileOutputStream encfos = new FileOutputStream(outfile);
-
             encfos.write(secretKey.getEncoded());
-
             encfos.close();
-        } catch (IOException e) {
+
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void chooseFile(){
-        file = fileChooser.showOpenDialog(new Stage());
+    // Java Fx Function to choose file
+    public void initChooseFile()
+    {
+        aesFile = aesFileChooser.showOpenDialog(new Stage());
     }
 
-    public void handle4(ActionEvent event) {
-        try {
+    // Use a saved Key
+    public void useKey(ActionEvent event)
+    {
+        try
+        {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose KEY");
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter(("KEY"), "*.key")
             );
+
             File infile = fileChooser.showOpenDialog(new Stage());
-            if (infile == null) {
+            if (infile == null)
+            {
                 return;
             }
+
             Path path = Paths.get(infile.getAbsolutePath());
             byte[] encodedKey = Files.readAllBytes(path);
             secretKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
             aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
-        } catch (IOException e) {
+
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
-    private static String getFileExtension(File file) {
+
+    // Get File Extension
+    private static String getFileExtension(File file)
+    {
         String fileName = file.getName();
         if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
             return fileName.substring(fileName.lastIndexOf(".")+1);
         else return "";
     }
 
-    public void genereteNewKey(ActionEvent event) {
-        try {
+    // Function to generate a new key
+    public void generateNewKey(ActionEvent event)
+    {
+        try
+        {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
             secretKey = kgen.generateKey();
 
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e)
+        {
             e.printStackTrace();
         }
         aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
     }
 
+    // When Logout Button pressed go back to login
     public void loginButtonOnAction(ActionEvent event)
     {
         try

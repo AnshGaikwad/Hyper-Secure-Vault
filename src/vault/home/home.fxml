@@ -554,16 +554,16 @@
                               <Font size="48.0" />
                            </font>
                         </Label>
-                        <Button fx:id="gnereteButton" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#genereteNewKey" prefHeight="56.0" prefWidth="134.0" text="Generate" />
+                        <Button fx:id="gnereteButton" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#generateNewKey" prefHeight="56.0" prefWidth="134.0" text="Generate" />
                         <TextField fx:id="aesTextField" alignment="CENTER" layoutX="187.0" layoutY="131.0" prefHeight="62.0" prefWidth="536.0">
                            <font>
                               <Font size="36.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="button2" layoutX="492.0" layoutY="398.0" mnemonicParsing="false" onAction="#handle2" prefHeight="50.0" prefWidth="230.0" text="Decrypt" />
-                        <Button fx:id="button1" layoutX="201.0" layoutY="398.0" mnemonicParsing="false" onAction="#handle1" prefHeight="50.0" prefWidth="240.0" text="Encrypt File" />
-                        <Button fx:id="button4" layoutX="527.0" layoutY="244.0" mnemonicParsing="false" onAction="#handle4" prefHeight="42.0" prefWidth="187.0" text="Use Key" />
-                        <Button fx:id="button3" layoutX="211.0" layoutY="244.0" mnemonicParsing="false" onAction="#handle3" prefHeight="42.0" prefWidth="207.0" text="Save Key" />
+                        <Button fx:id="button2" layoutX="492.0" layoutY="398.0" mnemonicParsing="false" onAction="#decryptFile" prefHeight="50.0" prefWidth="230.0" text="Decrypt" />
+                        <Button fx:id="button1" layoutX="201.0" layoutY="398.0" mnemonicParsing="false" onAction="#encryptFile" prefHeight="50.0" prefWidth="240.0" text="Encrypt File" />
+                        <Button fx:id="button4" layoutX="527.0" layoutY="244.0" mnemonicParsing="false" onAction="#useKey" prefHeight="42.0" prefWidth="187.0" text="Use Key" />
+                        <Button fx:id="button3" layoutX="211.0" layoutY="244.0" mnemonicParsing="false" onAction="#saveKey" prefHeight="42.0" prefWidth="207.0" text="Save Key" />
                      </children></AnchorPane>
                </content></Tab>
          </tabs>
