@@ -1,6 +1,5 @@
 package vault.register;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -49,10 +48,6 @@ public class RegisterController  implements Initializable {
 
     @FXML
     private Button registerBackButton;
-
-    public RegisterController(PasswordField registerConfirmPasswordField) {
-        this.registerConfirmPasswordField = registerConfirmPasswordField;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

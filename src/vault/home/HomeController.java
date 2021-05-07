@@ -692,7 +692,7 @@ public class HomeController implements Initializable
     // RSA
 
     // RSA Encryption Method
-    void encryptMethod() {
+    public void encryptMethod() {
 
         BigInteger m, n;
         char[] arr;
@@ -737,7 +737,7 @@ public class HomeController implements Initializable
     }
 
     // RSA Decryption Method
-    void decryptMethod() {
+    public void decryptMethod() {
         BigInteger c, n;
         char[] arr;
 
@@ -887,7 +887,7 @@ public class HomeController implements Initializable
     }
 
     // Encrypt a File using AES Encryption
-    protected void encryptFile()
+    public void encryptFile()
     {
         // Init
         initChooseFile();
@@ -948,7 +948,7 @@ public class HomeController implements Initializable
     }
 
     // AES File Decryption
-    protected void decryptFile()
+    public void decryptFile()
     {
         try
         {

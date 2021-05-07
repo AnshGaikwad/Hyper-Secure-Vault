@@ -95,7 +95,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <PasswordField fx:id="registerConfirmPasswordField1" layoutX="286.0" layoutY="428.0" prefHeight="37.0" prefWidth="524.0" promptText="Confirm Password">
+      <PasswordField fx:id="registerConfirmPasswordField" layoutX="286.0" layoutY="428.0" prefHeight="37.0" prefWidth="524.0" promptText="Confirm Password">
          <font>
             <Font size="16.0" />
          </font>
