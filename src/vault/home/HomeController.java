@@ -98,7 +98,6 @@ public class HomeController implements Initializable {
     @FXML
     private Label aesLabel;
 
-
     // Variables
 
     // Steganography
@@ -117,19 +116,22 @@ public class HomeController implements Initializable {
     final private static int mBlocksize;
     private static SecretKey secretKey;
 
-    /**
-     * Sets the cover image from the <code>JavaFX FileChooser</code> and adds it to the {@link #coverImageView}
-     * then enables the disabled secret data controls.
-     */
-    public void setCoverImage() {
+    // Set cover image from Filechooser and add it to the coverImageView
+    // Also enable steganographic controls which are disbled
+    public void setCoverImage()
+    {
+        // Choosing the file for cover image
         FileChooser fc = new FileChooser();
-        fc.setTitle("New Cover Image...");
+        fc.setTitle("Add New Cover Image");
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter(
                         "Image Files",
                         "*.png", "*.bmp", "*.jpg", "*.jpeg", "*.gif"));
         coverImage = fc.showOpenDialog(null);
-        if (coverImage != null) {
+
+        // If cover image selected, setting it to image view and enabling steganographic controls
+        if (coverImage != null)
+        {
             coverImagePane.setMinSize(0, 0);
             coverImageView.setImage(new Image("file:" + coverImage.getPath()));
             coverImageView.fitWidthProperty().bind(coverImagePane.widthProperty());
@@ -143,59 +145,76 @@ public class HomeController implements Initializable {
             secretImageTab.setDisable(Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
             messagePixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
             documentPixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
-        } else {
-            AlertBox.error("Error while setting cover image", "Try again...");
+        }
+        else
+        {
+            // If not selceted, dispaly alert box
+            AlertBox.error("Error while setting cover image", "Please try again!");
         }
     }
 
-    /**
-     * Sets the steganographic image from the <code>JavaFX FileChooser</code> and adds it to the {@link #steganographicImageView}.
-     */
-    public void setSteganographicImage() {
+    // Set the steganographic image from File Chooser and add it to steganographicImageView
+    public void setSteganographicImage()
+    {
+        // Choosing the file for steganographic image
         FileChooser fc = new FileChooser();
-        fc.setTitle("New Steganographic Image...");
+        fc.setTitle("Add New Steganographic Image");
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter(
                         "Image Files",
                         "*.png", "*.bmp", "*.jpg", "*.jpeg", "*.gif"));
         steganographicImage = fc.showOpenDialog(null);
-        if (steganographicImage != null) {
+
+        // If image is selected, set it to steganographicImageView
+        if (steganographicImage != null)
+        {
             steganographicImagePane.setMinSize(0, 0);
             steganographicImageView.setImage(new Image("file:" + steganographicImage.getPath()));
             steganographicImageView.fitWidthProperty().bind(steganographicImagePane.widthProperty());
             steganographicImageView.fitHeightProperty().bind(steganographicImagePane.heightProperty());
             steganographicImagePane.setMaxSize(1440, 900);
             decodeImage.setDisable(false);
-        } else {
-            AlertBox.error("Error while setting steganographic image", "Try again...");
+        }
+        else
+        {
+            // If image not selected, display alert box/
+            AlertBox.error("Error while setting steganographic image", "Please try again!");
         }
     }
 
-    /**
-     * Sets the secret document from the <code>JavaFX FileChooser</code> then adds its content
-     * line by line in the {@link #secretDocumentContent} using {@link #getDocumentContent(ListView, File)}
-     */
-    public void setSecretDocument() {
+    // Set the secret document and add it to the secretDocumentContent using getDocumentContent
+    public void setSecretDocument()
+    {
+        // Choose the file for secretDocumentContent
         FileChooser fc = new FileChooser();
-        fc.setTitle("New Secret Document...");
+        fc.setTitle("Add New Secret Document");
         secretDocument = fc.showOpenDialog(null);
-        if (secretDocument != null) {
+
+        // If selected, get the content
+        if (secretDocument != null)
+        {
             encodeDocument.setDisable(false);
-            try {
+            try
+            {
                 getDocumentContent(secretDocumentContent, secretDocument);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
+                // if failed!
                 e.printStackTrace();
                 AlertBox.error("Error while setting secret document", e.getMessage());
             }
-        } else {
-            AlertBox.error("Error while setting secret document", "Try again...");
+        }
+        else
+        {
+            AlertBox.error("Error while setting secret document", "Please try again!");
         }
     }
 
-    /**
-     * Sets the secret image from the <code>JavaFX FileChooser</code> and adds it to the {@link #secretImageView}.
-     */
-    public void setSecretImage() {
+    // Set the secret Image using Filechooser and add it to the secretImageView
+    public void setSecretImage()
+    {
+        // choose a file for the secretImageView
         FileChooser fc = new FileChooser();
         fc.setTitle("New Secret Image...");
         fc.getExtensionFilters()
@@ -203,6 +222,8 @@ public class HomeController implements Initializable {
                         "Image Files",
                         "*.png", "*.bmp", "*.jpg", "*.jpeg"));
         secretImage = fc.showOpenDialog(null);
+
+        // if secret image selected, set it to secretImagePane
         if (secretImage != null) {
             secretImagePane.setMinSize(0, 0);
             secretImageView.setImage(new Image("file:" + secretImage.getPath()));
@@ -212,20 +233,22 @@ public class HomeController implements Initializable {
             encodeImage.setDisable(false);
 
         } else {
-            AlertBox.error("Error while setting secret image", "Try again...");
+            // if not selected display alert
+            AlertBox.error("Error while setting secret image", "Please try again!");
         }
     }
 
-    /**
-     * Encodes a message in an image after compressing then encrypting it (if enabled),
-     * then calls either {@link ImageSteganography} or {@link GifSteganography} based
-     * on the cover image extension.
-     */
+    // Encodes  a message in the cover image after compressing then encrypting it (if enabled)
+    // Uses ImageSteganography and GifSteganography Respectively
     public void encodeMessageInImage() {
+
+        // Compressing the file using ZLibCompression
         String message = secretMessage.getText();
         byte[] secret = message.getBytes(StandardCharsets.UTF_8);
         if(compressMessage.isSelected())
             secret = ZLibCompression.compress(secret);
+
+        // Encrypting Message using AESEncryption
         if (encryptMessage.isSelected())
             secret = AESEncryption.encrypt(secret, password);
         String imageExtension = Utils.getFileExtension(coverImage).toLowerCase();
