@@ -1,7 +1,10 @@
 package vault.home;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -9,6 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import vault.exceptions.CannotEncodeException;
 import vault.exceptions.UnsupportedImageTypeException;
 import vault.exceptions.CannotDecodeException;
@@ -20,7 +24,6 @@ import vault.algorithms.ImageInImageSteganography;
 import vault.algorithms.ImageSteganography;
 import vault.algorithms.Utils;
 import vault.algorithms.ZLibCompression;
-import vault.modals.AboutPage;
 import vault.modals.AlertBox;
 import vault.modals.PasswordPrompt;
 import vault.types.DataFormat;
@@ -53,7 +56,9 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
-    // JavaFX Components
+    // JavaFx Components
+
+    // Steganography
     @FXML
     private Menu editMenu;
     @FXML
@@ -67,7 +72,7 @@ public class HomeController implements Initializable {
     @FXML
     private Tab secretImageTab, secretMessageTab, secretDocumentTab;
     @FXML
-    private VBox root, coverImagePane, secretImagePane, steganographicImagePane;
+    private VBox coverImagePane, secretImagePane, steganographicImagePane;
     @FXML
     private ListView<String> secretDocumentContent;
     @FXML
@@ -79,60 +84,38 @@ public class HomeController implements Initializable {
     @FXML
     private ImageView logoImageView;
 
-    // RSA Cipher
+    // RSA
+    @FXML
+    private Label nLabel, dLabel, fLabel;
+    @FXML
+    private TextArea rsaTextField;
+    @FXML
+    private TextField qField, pField, eField;
+
+    //AES
+    @FXML
+    private TextField aesTextField;
+    @FXML
+    private Label aesLabel;
+
+
+    // Variables
+
+    // Steganography
+    private File coverImage, secretImage, secretDocument, steganographicImage, tempFile;
+    private String password;
+    private Clipboard systemClipboard = Clipboard.getSystemClipboard();
+
+    // RSA
     private static int p;
     private static int q;
     private static int e;
 
-    @FXML
-    private Label n_label;
-    @FXML
-    private Label f_label;
-    @FXML
-    private Label d_label;
-    @FXML
-    private Button en_button;
-    @FXML
-    private Button de_button;
-    @FXML
-    private TextArea text_field;
-    @FXML
-    private TextField p_field;
-    @FXML
-    private TextField q_field;
-    @FXML
-    private TextField e_field;
-
-    // Files;
-    private File coverImage, secretImage, secretDocument, steganographicImage, tempFile;
-    // Password
-    private String password;
-    // Clipboard
-    private Clipboard systemClipboard = Clipboard.getSystemClipboard();
-
-    //AES
-
-    @FXML
-    private TextField textfield;
-    @FXML
-    private Label label1;
-    @FXML
-    private Button button1;
-    @FXML
-    private Button button2;
-    @FXML
-    private Button button3;
-    @FXML
-    private Button button4;
-    @FXML
-    private Label label2;
-
-
+    // AES
     private File file;
     private final FileChooser fileChooser = new FileChooser();
     final private static int mBlocksize;
     private static SecretKey secretKey;
-    private static String res;
 
     /**
      * Sets the cover image from the <code>JavaFX FileChooser</code> and adds it to the {@link #coverImageView}
@@ -554,32 +537,32 @@ public class HomeController implements Initializable {
         BigInteger m, n;
         char[] arr;
 
-        if (text_field.getText().equals("")) {
-            text_field.requestFocus();
-        } else if (p_field.getText().equals("")) {
-            p_field.requestFocus();
-        } else if (q_field.getText().equals("")) {
-            q_field.requestFocus();
-        } else if (e_field.getText().equals("")) {
-            e_field.requestFocus();
+        if (rsaTextField.getText().equals("")) {
+            rsaTextField.requestFocus();
+        } else if (pField.getText().equals("")) {
+            pField.requestFocus();
+        } else if (qField.getText().equals("")) {
+            qField.requestFocus();
+        } else if (eField.getText().equals("")) {
+            eField.requestFocus();
         } else {
-            p = Integer.parseInt(p_field.getText());
-            q = Integer.parseInt(q_field.getText());
-            e = Integer.parseInt(e_field.getText());
+            p = Integer.parseInt(pField.getText());
+            q = Integer.parseInt(qField.getText());
+            e = Integer.parseInt(eField.getText());
 
             n = new BigInteger(String.valueOf(p * q));
 
-            arr = text_field.getText().toCharArray();
-            text_field.clear();
+            arr = rsaTextField.getText().toCharArray();
+            rsaTextField.clear();
 
             for (int i = 0; i < arr.length; i++) {
                 m = new BigInteger(String.valueOf((int) arr[i]));
-                text_field.setText(text_field.getText() + (char) (m.pow(e).mod(n).intValue() + 20));
+                rsaTextField.setText(rsaTextField.getText() + (char) (m.pow(e).mod(n).intValue() + 20));
             }
 
-            n_label.setText("n = " + p * q);
-            f_label.setText("φ(n) = " + EulersTotientFunction());
-            d_label.setText("d = " + ExtendedEuclidAlgorithm());
+            nLabel.setText("n = " + p * q);
+            fLabel.setText("φ(n) = " + EulersTotientFunction());
+            dLabel.setText("d = " + ExtendedEuclidAlgorithm());
 
         }
     }
@@ -589,34 +572,34 @@ public class HomeController implements Initializable {
         BigInteger c, n;
         char[] arr;
 
-        if (text_field.getText().equals("")) {
-            text_field.requestFocus();
-        } else if (p_field.getText().equals("")) {
-            p_field.requestFocus();
-        } else if (q_field.getText().equals("")) {
-            q_field.requestFocus();
-        } else if (e_field.getText().equals("")) {
-            e_field.requestFocus();
+        if (rsaTextField.getText().equals("")) {
+            rsaTextField.requestFocus();
+        } else if (pField.getText().equals("")) {
+            pField.requestFocus();
+        } else if (qField.getText().equals("")) {
+            qField.requestFocus();
+        } else if (eField.getText().equals("")) {
+            eField.requestFocus();
         } else {
-            p = Integer.parseInt(p_field.getText());
-            q = Integer.parseInt(q_field.getText());
-            e = Integer.parseInt(e_field.getText());
+            p = Integer.parseInt(pField.getText());
+            q = Integer.parseInt(qField.getText());
+            e = Integer.parseInt(eField.getText());
 
             int d = ExtendedEuclidAlgorithm();
 
             n = new BigInteger(String.valueOf(p * q));
 
-            arr = text_field.getText().trim().toCharArray();
-            text_field.clear();
+            arr = rsaTextField.getText().trim().toCharArray();
+            rsaTextField.clear();
 
             for (int i = 0; i < arr.length; i++) {
                 c = new BigInteger(String.valueOf((int) arr[i] - 20));
-                text_field.setText(text_field.getText() + (char) ((c.pow(d).mod(n)).intValue()));
+                rsaTextField.setText(rsaTextField.getText() + (char) ((c.pow(d).mod(n)).intValue()));
             }
 
-            n_label.setText("n = " + p * q);
-            f_label.setText("φ(n) = " + EulersTotientFunction());
-            d_label.setText("d = " + ExtendedEuclidAlgorithm());
+            nLabel.setText("n = " + p * q);
+            fLabel.setText("φ(n) = " + EulersTotientFunction());
+            dLabel.setText("d = " + ExtendedEuclidAlgorithm());
 
         }
 
@@ -692,12 +675,12 @@ public class HomeController implements Initializable {
         logoImageView.setImage(lockImage);
 
         // RSA Defaults
-        p_field.setText("71");
-        q_field.setText("67");
-        e_field.setText("281");
+        pField.setText("71");
+        qField.setText("67");
+        eField.setText("281");
 
         // AES
-        textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+        aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
 
         // button1.setOnAction(event -> {textfield.setText("DGDHDJ");});
     }
@@ -706,7 +689,7 @@ public class HomeController implements Initializable {
     static {
         mBlocksize = 128;
         secretKey = null;
-        res="0";
+        String res = "0";
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
             secretKey = kgen.generateKey();
@@ -774,7 +757,7 @@ public class HomeController implements Initializable {
                     new FileChooser.ExtensionFilter("All files", "*.*")
             );
             File outfile = fileChooser.showSaveDialog(new Stage());
-            if (outfile==null){ label1.setText("Choose File to Decrypt");return;}
+            if (outfile==null){ aesLabel.setText("Choose File to Decrypt");return;}
             InputStream fis = new FileInputStream(file);
             int read = 0;
             if (!outfile.exists())
@@ -846,7 +829,7 @@ public class HomeController implements Initializable {
             Path path = Paths.get(infile.getAbsolutePath());
             byte[] encodedKey = Files.readAllBytes(path);
             secretKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
-            textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+            aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -866,6 +849,23 @@ public class HomeController implements Initializable {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        textfield.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+        aesTextField.setText(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+    }
+
+    public void loginButtonOnAction(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("../login/login.fxml"));
+            Stage registerStage = new Stage();
+            registerStage.initStyle(StageStyle.UNDECORATED);
+            registerStage.setScene(new Scene(root, 900, 600));
+            registerStage.show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 }

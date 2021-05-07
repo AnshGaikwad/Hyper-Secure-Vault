@@ -36,7 +36,9 @@
                   <MenuItem fx:id="newSecretDocument" disable="true" mnemonicParsing="false" onAction="#setSecretDocument" text="Add Secret Document" />
                   <MenuItem fx:id="newSecretImage" disable="true" mnemonicParsing="false" onAction="#setSecretImage" text="Add Secret Image" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="quitApp" mnemonicParsing="false" onAction="#quitApp" text="Quit" />
+                  <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#loginButtonOnAction" text="Log out" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="quitApp1" mnemonicParsing="false" onAction="#quitApp" text="Quit" />
                </items>
                <graphic>
                   <ImageView fx:id="logoImageView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -84,7 +86,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="550.0" prefWidth="900.0">
                            <children>
-                              <Label text="Work In Progress">
+                              <Label text="All Organization's Images">
                                  <font>
                                     <Font size="48.0" />
                                  </font>
@@ -105,18 +107,27 @@
                                     <Font name="System Bold" size="18.0" fx:id="x1" />
                                  </font>
                               </Label>
-                              <VBox fx:id="coverImagePane" alignment="CENTER" VBox.vgrow="ALWAYS">
+                              <VBox fx:id="coverImagePane" alignment="CENTER" prefHeight="406.0" prefWidth="422.0" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="12.0" left="12.0" right="12.0" />
                                  </VBox.margin>
                                  <children>
-                                    <ImageView fx:id="coverImageView" fitHeight="470.0" fitWidth="422.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                                    <ImageView fx:id="coverImageView" fitHeight="364.0" fitWidth="422.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                                        <viewport>
                                           <Rectangle2D />
                                        </viewport>
                                     </ImageView>
                                  </children>
                               </VBox>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Button fx:id="openEncodeImage" layoutX="162.0" layoutY="34.0" mnemonicParsing="false" onAction="#setCoverImage" text="Open Image">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
                            </children>
                            <padding>
                               <Insets top="12.0" />
@@ -374,15 +385,21 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+                        <AnchorPane layoutX="24.0" layoutY="479.20001220703125" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
                            <children>
-                              <Button fx:id="decodeImage" disable="true" mnemonicParsing="false" onAction="#decodeImage" text="Decode">
+                              <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" />
+                              <Button fx:id="decodeImage1" disable="true" layoutX="466.0" layoutY="12.0" mnemonicParsing="false" onAction="#decodeImage" text="Decode Image">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="openDecodeImage" layoutX="277.0" layoutY="12.0" mnemonicParsing="false" onAction="#setSteganographicImage" prefHeight="40.0" prefWidth="127.0" text="Open Image">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
                            </children>
-                        </HBox>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </content>
