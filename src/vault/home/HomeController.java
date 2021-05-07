@@ -251,19 +251,26 @@ public class HomeController implements Initializable {
         // Encrypting Message using AESEncryption
         if (encryptMessage.isSelected())
             secret = AESEncryption.encrypt(secret, password);
+
+        // Get file extension to differentiate between image and gif
         String imageExtension = Utils.getFileExtension(coverImage).toLowerCase();
         imageExtension = (imageExtension.matches("jpg|jpeg")) ? "png" : imageExtension;
+
+        // Get path for saving image
         FileChooser fc = new FileChooser();
         fc.setTitle("Save Steganographic Image...");
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter(
                         imageExtension.toUpperCase(),
                         "*." + imageExtension));
-
         steganographicImage = fc.showSaveDialog(null);
-        if (steganographicImage != null) {
+
+        // if image selected, apply steganography
+        if (steganographicImage != null)
+        {
             BaseSteganography img;
-            try {
+            try
+            {
                 if (imageExtension.toLowerCase().equals("gif"))
                     img = new GifSteganography(coverImage, encryptMessage.isSelected(), compressMessage.isSelected());
                 else

@@ -101,40 +101,36 @@ public class AESEncryption {
         }
     }
 
-    /**
-     * Decrypts a given byte array that was encrypted by {@link #encrypt(byte[], String)}.
-     *
-     * @param input encrypted byte array to be decrypted
-     * @param myKey encryption password
-     * @return      a byte array with the decrypted data.
-     */
-    public static byte[] decrypt(byte[] input, String myKey){
-        try{
+    // Decrypts a given byte array
+    public static byte[] decrypt(byte[] input, String myKey)
+    {
+        try
+        {
             setKey(myKey);
             Cipher cipher = Cipher.getInstance(CIPHER_SPEC);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
             return cipher.doFinal(input);
-        }catch (GeneralSecurityException e){
+        }
+        catch (GeneralSecurityException e)
+        {
             e.printStackTrace();
             AlertBox.error("Error while decrypting", e.getMessage());
         }
         return null;
     }
 
-    /**
-     * Decrypts a given file that was encrypted by {@link #encrypt(File, File, String)}.
-     *
-     * @param input  encrypted file to be decrypted
-     * @param output file to which decrypted data will be written to
-     * @param myKey  encryption password
-     */
-    public static void decrypt(File input, File output, String myKey){
-        try{
+    // Decrypts a given file
+    public static void decrypt(File input, File output, String myKey)
+    {
+        try
+        {
             setKey(myKey);
             Cipher cipher = Cipher.getInstance(CIPHER_SPEC);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
             process(cipher, input, output);
-        }catch(IOException | GeneralSecurityException e) {
+        }
+        catch(IOException | GeneralSecurityException e)
+        {
             e.printStackTrace();
             output.delete();
             AlertBox.error("Error while decrypting", e.getMessage());
