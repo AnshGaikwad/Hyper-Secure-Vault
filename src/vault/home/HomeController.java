@@ -481,139 +481,234 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Gets the encryption mode from the password prompt.
-     */
-    public void getEncryptionPassword() {
-        if (encryptMessage.isSelected() || encryptDocument.isSelected()) {
-            if ((password = PasswordPrompt.display(PasswordType.ENCRYPT)) == null) {
+    // Gets the encryption mode from the password prompt.
+    public void getEncryptionPassword()
+    {
+        if (encryptMessage.isSelected() || encryptDocument.isSelected())
+        {
+            if ((password = PasswordPrompt.display(PasswordType.ENCRYPT)) == null)
+            {
                 encryptMessage.setSelected(false);
                 encryptDocument.setSelected(false);
             }
-        } else {
+        }
+        else
+        {
             password = null;
         }
     }
 
-    /** Returns the value of the encryption mode radio buttons.
-     *
-     * @param group radio button group.
-     * @return      encryption mode (1 or 2).
-     */
-    private byte getToggleGroupValue(ToggleGroup group){
+    // Returns the value of the encryption mode radio buttons.
+    private byte getToggleGroupValue(ToggleGroup group)
+    {
         RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
         return (byte) Character.getNumericValue(selectedRadioButton.getText().charAt(0));
     }
 
-    /**
-     * Reads a document line by line and sets its contents into a <code>ListView</code>.
-     *
-     * @param documentView <code>JavaFX ListView</code> that will hold the document line by line
-     * @param document     document to display in the ListView
-     * @throws IOException if an error occurs while reading the document
-     */
-    private static void getDocumentContent(ListView<String> documentView, File document) throws IOException {
+    // Reads a document line by line and sets its contents into a ListView
+    private static void getDocumentContent(ListView<String> documentView, File document) throws IOException
+    {
         InputStreamReader streamReader = new InputStreamReader(new FileInputStream(document));
-        BufferedReader reader = new BufferedReader(streamReader);//reads the user file
+
+        //reads the user file
+        BufferedReader reader = new BufferedReader(streamReader);
         String line;
         documentView.getItems().clear();
+
         while ((line = reader.readLine()) != null)
             documentView.getItems().add(line);
     }
 
-    /** Undoes the last change to the {@link #secretMessage} <code>TextArea</code>. */
-    public void undo() { secretMessage.undo(); }
-    /** Redoes the last change to the {@link #secretMessage} <code>TextArea</code>. */
-    public void redo() { secretMessage.redo(); }
-    /** Cuts the content of the {@link #secretMessage} <code>TextArea</code> to the system clipboard. */
-    public void cut() { secretMessage.cut(); }
-    /** Copies the content of the {@link #secretMessage} <code>TextArea</code> to the system clipboard. */
-    public void copy(){ secretMessage.copy();}
-    /** Pastes the content of the system clipboard to the {@link #secretMessage} <code>TextArea</code>. */
-    public void paste(){ secretMessage.paste(); }
-    /** Deletes the selected text of the {@link #secretMessage} <code>TextArea</code>. */
-    public void delete(){ secretMessage.replaceSelection(""); }
-    /** Selects all the content of the {@link #secretMessage} <code>TextArea</code>. */
-    public void selectAll(){ secretMessage.selectAll(); }
-    /** Deselects the current {@link #secretMessage} <code>TextArea</code> selection. */
-    public void deselect() { secretMessage.deselect(); }
 
-    /** Handles the state of the menu items in the edit menu. */
-    public void showingEditMenu() {
-        if( systemClipboard == null ) {systemClipboard = Clipboard.getSystemClipboard();}
-
-        if(systemClipboard.hasString()) { pasteMenu.setDisable(false); }
-        else {pasteMenu.setDisable(true);}
-
-        if(!secretMessage.getSelectedText().equals("")) {cutMenu.setDisable(false); copyMenu.setDisable(false); deselectMenu.setDisable(true); deleteMenu.setDisable(false);}
-        else { cutMenu.setDisable(true); copyMenu.setDisable(true); deselectMenu.setDisable(true); deleteMenu.setDisable(true);}
-
-        if (secretMessage.getSelectedText().equals(secretMessage.getText())) { selectAllMenu.setDisable(true); }
-        else { selectAllMenu.setDisable(false); }
-
-        if(secretMessage.isRedoable()) { redoMenu.setDisable(false); }
-        else { redoMenu.setDisable(true); }
-
-        if(secretMessage.isUndoable()) { undoMenu.setDisable(false); }
-        else { undoMenu.setDisable(true); }
+    // Undoes the last change to the secretMessage TextArea
+    public void undo()
+    {
+        secretMessage.undo();
     }
 
-    /** Displays the About Page. */
-    public void openBackendSource() {
-        try {
+    // Redoes the last change to the secretMessage TextArea
+    public void redo()
+    {
+        secretMessage.redo();
+    }
+
+    // Cuts the content of the secretMessage TextArea to the system clipboard
+    public void cut()
+    {
+        secretMessage.cut();
+    }
+
+    // Copies the content of the secretMessage TextArea to the system clipboard
+    public void copy()
+    {
+        secretMessage.copy();
+    }
+
+    // Pastes the content of the system clipboard to the secretMessage TextArea
+    public void paste()
+    {
+        secretMessage.paste();
+    }
+
+    // Deletes the selected text of the secretMessage TextArea
+    public void delete()
+    {
+        secretMessage.replaceSelection("");
+    }
+
+    // Selects all the content of the secretMessage TextArea
+    public void selectAll()
+    {
+        secretMessage.selectAll();
+    }
+
+    // Deselects the current secretMessage TextArea selection
+    public void deselect()
+    {
+        secretMessage.deselect();
+    }
+
+    // Handles the state of the menu items in the edit menu
+    public void showingEditMenu()
+    {
+        if( systemClipboard == null)
+        {
+            systemClipboard = Clipboard.getSystemClipboard();
+        }
+
+        if(systemClipboard.hasString())
+        {
+            pasteMenu.setDisable(false);
+        }
+        else
+        {
+            pasteMenu.setDisable(true);
+        }
+
+        if(!secretMessage.getSelectedText().equals(""))
+        {
+            cutMenu.setDisable(false);
+            copyMenu.setDisable(false);
+            deselectMenu.setDisable(true);
+            deleteMenu.setDisable(false);
+        }
+        else
+        {
+            cutMenu.setDisable(true);
+            copyMenu.setDisable(true);
+            deselectMenu.setDisable(true);
+            deleteMenu.setDisable(true);
+        }
+
+        if(secretMessage.getSelectedText().equals(secretMessage.getText()))
+        {
+            selectAllMenu.setDisable(true);
+        }
+        else
+        {
+            selectAllMenu.setDisable(false);
+        }
+
+        if(secretMessage.isRedoable())
+        {
+            redoMenu.setDisable(false);
+        }
+        else
+        {
+            redoMenu.setDisable(true);
+        }
+
+        if(secretMessage.isUndoable())
+        {
+            undoMenu.setDisable(false);
+        }
+        else
+        {
+            undoMenu.setDisable(true);
+        }
+    }
+
+    // Function to open the Backend Source Code
+    public void openBackendSource()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad/Hyper-Secure-Vault-Backend").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Displays the About Page. */
-    public void openSource() {
-        try {
+    // Function to open the Source Code
+    public void openSource()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad/Hyper-Secure-Vault/").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Displays the About Page. */
-    public void sendEmail() {
-        try {
+    // Function to send me an Email
+    public void sendEmail()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("mailto:anshyg2002@gmail.com").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Displays the About Page. */
-    public void openGithub() {
-        try {
+    // Function to open my Github Profile
+    public void openGithub()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("https://github.com/AnshGaikwad").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Displays the About Page. */
-    public void openLinkedIn() {
-        try {
+    // Function to open my LinkedIn Profile
+    public void openLinkedIn()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("https://www.linkedin.com/in/anshgaikwad/").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Displays the About Page. */
-    public void openMedium() {
-        try {
+    // Function to open my Medium Profile
+    public void openMedium()
+    {
+        try
+        {
             Desktop.getDesktop().browse(new URL("https://medium.com/@anshyg2002").toURI());
-        } catch (IOException | URISyntaxException ioException) {
+        }
+        catch (IOException | URISyntaxException ioException)
+        {
             ioException.printStackTrace();
         }
     }
 
-    /** Quits the app. */
-    public void quitApp() {
+    // Quit the app
+    public void quitApp()
+    {
         System.exit(0);
     }
 
