@@ -277,7 +277,9 @@ public class HomeController implements Initializable {
                     img = new ImageSteganography(coverImage, encryptMessage.isSelected(), compressMessage.isSelected(), getToggleGroupValue(messagePixelsPerByte));
                 img.encode(secret, steganographicImage);
                 AlertBox.information("Encoding Successful!", "Message encoded successfully in " + steganographicImage.getName() + ".", steganographicImage);
-            } catch (IOException | CannotEncodeException | UnsupportedImageTypeException e) {
+            }
+            catch (IOException | CannotEncodeException | UnsupportedImageTypeException e)
+            {
                 e.printStackTrace();
                 AlertBox.error("Error while encoding", e.getMessage());
             }

@@ -12,19 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-/**
- * The {@code AlertBox} class is uses the <code>JavaFX Alert</code> modal to display either caught error messages
- * or various information about a successful steganography process.
- */
+// JavaFX Alert modal to display either caught error messages or various other information
 public class AlertBox {
 
-    /**
-     * Displays an error Alert box to display a caught error during the steganographic process.
-     *
-     * @param header  error header
-     * @param content general information about the error (usually from the <code>getMessage</code> method from the <code>Java Exception</code> class)
-     */
-    public static void error(String header, String content) {
+    // Displays an error Alert box to display a caught error during the steganographic process.
+    public static void error(String header, String content)
+    {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(header);
@@ -32,15 +25,9 @@ public class AlertBox {
         alert.showAndWait();
     }
 
-    /**
-     * Displays a success prompt after embeding data into an image or extracting a document or an image inside an image.
-     *
-     * @param header       information header
-     * @param content      success message
-     * @param file         image or document to display
-     * @throws IOException if an error occurs when opening the file.
-     */
-    public static void information(String header, String content, File file) throws IOException{
+    // Displays a success prompt after embedding data into an image or extracting a document or an image inside an image.
+    public static void information(String header, String content, File file) throws IOException
+    {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(header);
@@ -52,25 +39,22 @@ public class AlertBox {
         alert.getButtonTypes().setAll(viewButton, uploadButton, cancelButton);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == viewButton){
+        if (result.isPresent() && result.get() == viewButton)
+        {
             Desktop.getDesktop().open(file);
         }
 
         Optional<ButtonType> uploadResult = alert.showAndWait();
-        if (uploadResult.isPresent() && uploadResult.get() == uploadButton){
-            System.out.println("Here");
-
+        if (uploadResult.isPresent() && uploadResult.get() == uploadButton)
+        {
+            // TODO: Isn't implemented yet
+            System.out.println("Upload");
         }
     }
 
-    /**
-     * Displays a success prompt after extracting a message inside an image.
-     *
-     * @param header  success header
-     * @param content success message
-     * @param message extracted message
-     */
-    public static void information(String header, String content, String message) {
+    // Displays a success prompt after extracting a message inside an image
+    public static void information(String header, String content, String message)
+    {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(header);
