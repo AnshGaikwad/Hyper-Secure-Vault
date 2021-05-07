@@ -388,7 +388,7 @@
                         <AnchorPane layoutX="24.0" layoutY="479.20001220703125" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
                            <children>
                               <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0" />
-                              <Button fx:id="decodeImage1" disable="true" layoutX="466.0" layoutY="12.0" mnemonicParsing="false" onAction="#decodeImage" text="Decode Image">
+                              <Button fx:id="decodeImage" disable="true" layoutX="466.0" layoutY="12.0" mnemonicParsing="false" onAction="#decodeImage" text="Decode Image">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -410,17 +410,17 @@
                      <children>
                         <VBox layoutX="29.0" layoutY="255.0" prefHeight="137.0" prefWidth="167.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="29.0">
                            <children>
-                              <Label fx:id="n_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="n = ">
+                              <Label fx:id="nLabel" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="n = ">
                                  <font>
                                     <Font name="Times New Roman" size="19.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="f_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="φ(n) = ">
+                              <Label fx:id="fLabel" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="φ(n) = ">
                                  <font>
                                     <Font name="Times New Roman" size="19.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="d_label" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="d = ">
+                              <Label fx:id="dLabel" contentDisplay="CENTER" prefHeight="58.0" prefWidth="100.0" text="d = ">
                                  <font>
                                     <Font name="Times New Roman" size="19.0" />
                                  </font>
@@ -438,7 +438,7 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <TextArea fx:id="text_field" layoutX="247.0" layoutY="90.0" prefHeight="301.0" prefWidth="614.0" promptText="Enter Text">
+                        <TextArea fx:id="rsaTextField" layoutX="247.0" layoutY="90.0" prefHeight="301.0" prefWidth="614.0" promptText="Enter Text">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -464,7 +464,7 @@
                                           <Insets top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="p_field" prefHeight="28.0" prefWidth="64.0">
+                                    <TextField fx:id="pField" prefHeight="28.0" prefWidth="64.0">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
@@ -490,7 +490,7 @@
                                           <Insets top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="q_field" prefHeight="35.0" prefWidth="64.0">
+                                    <TextField fx:id="qField" prefHeight="35.0" prefWidth="64.0">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
@@ -516,7 +516,7 @@
                                           <Insets top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="e_field" prefHeight="35.0" prefWidth="64.0">
+                                    <TextField fx:id="eField" prefHeight="35.0" prefWidth="64.0">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
@@ -549,13 +549,13 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="label1" layoutX="330.0" layoutY="36.0" text="AES 128 Bit">
+                        <Label fx:id="aesLabel" layoutX="330.0" layoutY="36.0" text="AES 128 Bit">
                            <font>
                               <Font size="48.0" />
                            </font>
                         </Label>
                         <Button fx:id="gnereteButton" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#genereteNewKey" prefHeight="56.0" prefWidth="134.0" text="Generate" />
-                        <TextField fx:id="textfield" alignment="CENTER" layoutX="187.0" layoutY="131.0" prefHeight="62.0" prefWidth="536.0">
+                        <TextField fx:id="aesTextField" alignment="CENTER" layoutX="187.0" layoutY="131.0" prefHeight="62.0" prefWidth="536.0">
                            <font>
                               <Font size="36.0" />
                            </font>

@@ -258,7 +258,7 @@ public class HomeController implements Initializable {
 
         // Get path for saving image
         FileChooser fc = new FileChooser();
-        fc.setTitle("Save Steganographic Image...");
+        fc.setTitle("Save Steganographic Image");
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter(
                         imageExtension.toUpperCase(),

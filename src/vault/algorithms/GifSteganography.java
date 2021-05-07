@@ -18,35 +18,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The {@code GifSteganography} class handles the steganographic process for GIF89a images using the Least Significant Bit (LSB) method.
- * <p>Due to the limited Colormap of each pixel in a gif (255 colors instead of 16 million colors),
- * each byte is hidden inside the LSB of 8 consecutive pixels.
- * <p>The gif steganography process is optimized for hiding small data, as large data can heavily alter the gif stego image.
- *
- * @see GifSequenceWriter
- * @see Metadata
- */
-public class GifSteganography extends BaseSteganography{
 
-    /** Array of individual gif frames. */
+// Handles the steganographic process for GIF89a images using the Least Significant Bit (LSB) method.
+// Due to the limited Colormap of each pixel in a gif (255 colors instead of 16 million colors), each byte is hidden inside the LSB of 8 consecutive pixels
+// The gif steganography process is optimized for hiding small data, as large data can heavily alter the gif stego image.
+public class GifSteganography extends BaseSteganography
+{
+    // Array of individual gif frames
     private BufferedImage[] frames;
-    /** Array of gif frames metadatas. */
+
+    // Array of gif frames metadatas
     private IIOMetadata[] metadatas;
-    /** Delay of first gif frame. */
+
+    // Delay of first gif frame
     private int delayMS;
-    /** z-index current position (index of current frame). */
+
+    // z-index current position (index of current frame)
     private int k=0;
 
-    /**
-     * Creates a <code>GifSteganography</code> object to perform embedding or extraction of data in GIF89a images.
-     *
-     * @param input        gif image to embed to/extract from
-     * @param isEncrypted  encryption status
-     * @param isCompressed compression status
-     * @throws IOException if an error occurs while handling the gif image.
-     */
-    public GifSteganography(File input, boolean isEncrypted, boolean isCompressed) throws IOException{
+    // Creates a GifSteganography object to perform embedding or extraction of data in GIF89a images
+    public GifSteganography(File input, boolean isEncrypted, boolean isCompressed) throws IOException
+    {
         this.isEncrypted = isEncrypted;
         this.isCompressed = isCompressed;
         this.frames = Metadata.getFrames(input);
@@ -63,25 +55,16 @@ public class GifSteganography extends BaseSteganography{
      */
     public GifSteganography(File input) throws IOException{ this(input, false, false); }
 
-    /**
-     * Sets the {@link #capacity} field by adding up the capacity of each frame of the gif image.
-     *
-     * @param frames array of <code>BufferedImage</code> of each frame of the gif.
-     */
-    private void setCapacity(BufferedImage[] frames){
+    // Sets the capacity field by adding up the capacity of each frame of the gif image.
+    private void setCapacity(BufferedImage[] frames)
+    {
         for (BufferedImage bi : frames)
-            this.capacity += bi.getHeight()*bi.getWidth();
-        this.capacity/=8;
+            this.capacity += (long) bi.getHeight() * bi.getWidth();
 
+        this.capacity/=8;
     }
 
-    /**
-     * Returns the header that contains information about the data embedded in the stego image.
-     *
-     * @return                       a byte array that contains information about the embedded data.
-     * @throws CannotDecodeException if there is no data embedded in the stego image.
-     * @see    #getHeader()
-     */
+    // Returns the header that contains information about the data embedded in the stego image.
     public byte[] getHeader() throws CannotDecodeException{
         int b;
         int mode = revealByte();
