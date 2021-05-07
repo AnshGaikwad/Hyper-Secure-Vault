@@ -21,29 +21,25 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-/**
- * The {@code PasswordPrompt} class is used to display a password prompt to the user when embedding data in an image or extracting it from an image
- * in a <code>JavaFX</code> application modal window.
- */
-public class PasswordPrompt {
+// Used to display a password prompt to the user when embedding data in an image or extracting it from an image
+public class PasswordPrompt
+{
 
-    /** Error label displayed when {@link #validatePassword(String, String)} returns <code>false</code>. */
+    // Error label displayed when validatePassword(String, String) returns false
     private static String errorLabelText;
-    /** Encryption or decryption password. */
+
+    // Encryption or decryption password
     private static String password;
-    /** Image used as key. */
+
+    // Image used as key
     private static File keyImage;
-    /** Sets the behaviour of the window when an image is set as a password. */
+
+    // Sets the behaviour of the window when an image is set as a password
     private static boolean keyImageEnabled = false;
 
-    /**
-     * Displays the password prompt application modal window.
-     *
-     * @param mode password mode (ENCRYPTION or DECRYPTION)
-     * @return     the encryption/decryption password.
-     * @see        PasswordType
-     */
-    public static String display(PasswordType mode) {
+    // Displays the password prompt application modal window.
+    public static String display(PasswordType mode)
+    {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Enter Password");
@@ -136,9 +132,10 @@ public class PasswordPrompt {
                 window.close();
             }
         });
+
         imageButton.setOnAction(e -> {
             FileChooser fc = new FileChooser();
-            fc.setTitle("Hash Image...");
+            fc.setTitle("Hash Image");
             fc.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter(
                             "Image Files",
@@ -151,6 +148,7 @@ public class PasswordPrompt {
             window.sizeToScene();
             keyImageEnabled = true;
         });
+
         cancelButton.setOnAction(e -> {
             password = null;
             window.close();
@@ -162,24 +160,20 @@ public class PasswordPrompt {
         return password;
     }
 
-    /**
-     * Checks if the encryption password isn't empty
-     * or if the password and password confirmation fields are equal
-     *
-     * @param pass        value of the password box
-     * @param confirmPass value of the confirm password box
-     * @return            <code>true</code> if password is valid, <code>false</code> if password is invalid.
-     */
-    private static boolean validatePassword(String pass,String confirmPass) {
+    // Checks if the encryption password isn't empty
+    // or if the password and password confirmation fields are equal
+    private static boolean validatePassword(String pass, String confirmPass)
+    {
 
         boolean isValid = true;
-        if(pass.equals("") || confirmPass.equals("")) {
+        if(pass.equals("") || confirmPass.equals(""))
+        {
             errorLabelText = "Both fields are required."; isValid = false;
         }
-        else if(!pass.equals(confirmPass)){
+        else if(!pass.equals(confirmPass))
+        {
             errorLabelText = "Passwords don't match!"; isValid = false;
         }
         return isValid;
     }
-
 }
