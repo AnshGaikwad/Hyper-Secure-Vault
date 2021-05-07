@@ -75,11 +75,10 @@ public class ZLibCompression
     public static byte[] decompress(byte[] compressed)
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        OutputStream os = baos;
         InputStream is = new InflaterInputStream(new ByteArrayInputStream(compressed));
         try
         {
-            copy(is, os);
+            copy(is, baos);
             return baos.toByteArray();
         }
         catch (IOException e)

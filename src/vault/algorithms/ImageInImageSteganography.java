@@ -17,7 +17,7 @@ public class ImageInImageSteganography extends ImageSteganography
 {
 
     // Encoding mode (1 or 2 pixels/pixel) (3 or 6 hidden image MSBs)
-    private byte pixelsPerPixel;
+    private final byte pixelsPerPixel;
 
     // Creates an ImageInImageSteganography object to perform embedding/extraction of another image
     public ImageInImageSteganography(File input, byte pixelsPerPixel)

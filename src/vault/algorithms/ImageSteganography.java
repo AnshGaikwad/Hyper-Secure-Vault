@@ -32,7 +32,7 @@ public class ImageSteganography extends BaseSteganography
         this.image = ImageIO.read(input);
         this.capacity = (long) this.image.getHeight() * this.image.getWidth() / this.pixelsPerByte;
         if(this.image.getType() == BufferedImage.TYPE_CUSTOM || this.image.getType() >= 8)
-            throw new UnsupportedImageTypeException("Image type " + this.image.getType() + " is unsuported");
+            throw new UnsupportedImageTypeException("Image type " + this.image.getType() + " is unsupported");
     }
 
     // Creates an ImageSteganography object to perform embedding or extraction of data on 24-bit, RGB Bitmap images.
@@ -136,7 +136,7 @@ public class ImageSteganography extends BaseSteganography
         int red = oldColor.getRed(), green = oldColor.getGreen(), blue = oldColor.getBlue();
         red = red & pixelMask | b & bitMask; b = (byte) (b >> shift);
         green = green & 0xFC | b & 0x03; b = (byte) (b >> 2);
-        blue = blue & pixelMask | b & bitMask; b = (byte) (b >> shift);
+        blue = blue & pixelMask | b & bitMask;
         Color newColor = new Color(red, green,blue);
         this.image.setRGB(j,i,newColor.getRGB());
     }

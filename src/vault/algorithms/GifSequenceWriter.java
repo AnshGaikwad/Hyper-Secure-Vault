@@ -1,13 +1,3 @@
-//  GifSequenceWriter.java
-//
-//  Created by Elliot Kroo on 2009-04-25.
-//  Modified by Feres Gaaloul on 2018-07.
-//
-// This work is licensed under the Creative Commons Attribution 3.0 Unported
-// License. To view a copy of this license, visit
-// http://creativecommons.org/licenses/by/3.0/ or send a letter to Creative
-// Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
-
 package vault.algorithms;
 
 import javax.imageio.*;
@@ -22,10 +12,10 @@ import java.util.Iterator;
 class GifSequenceWriter {
 
     // Used to write a gif image
-    private ImageWriter gifWriter;
+    private final ImageWriter gifWriter;
 
     // Describes how the gif will be written
-    private ImageWriteParam imageWriteParam;
+    private final ImageWriteParam imageWriteParam;
 
      // Creates a new GifSequenceWriter
      // outputStream        => the ImageOutputStream to be written to

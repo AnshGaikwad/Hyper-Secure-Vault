@@ -430,11 +430,11 @@
                               <Insets left="10.0" />
                            </padding>
                         </VBox>
-                        <Button fx:id="en_button" layoutX="289.0" layoutY="433.0" onAction="#encyptMethod" prefHeight="57.0" prefWidth="234.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Encryption" AnchorPane.leftAnchor="289.0">
+                        <Button fx:id="en_button" layoutX="289.0" layoutY="433.0" onAction="#encryptMethod" prefHeight="57.0" prefWidth="234.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Encryption" AnchorPane.leftAnchor="289.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="de_button" layoutX="567.0" layoutY="432.0" onAction="#decyptMethod" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Decryption" AnchorPane.leftAnchor="567.0">
+                        <Button fx:id="de_button" layoutX="567.0" layoutY="432.0" onAction="#decryptMethod" prefHeight="60.0" prefWidth="232.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: white;" text="Decryption" AnchorPane.leftAnchor="567.0">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>

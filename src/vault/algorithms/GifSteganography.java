@@ -101,6 +101,10 @@ public class GifSteganography extends BaseSteganography
         for(byte b : message)
             hideByte(b);
 
+        encodeDecodeImageOutputStream(output);
+    }
+
+    private void encodeDecodeImageOutputStream(File output) throws IOException {
         ImageOutputStream ios = new FileImageOutputStream(output);
         ColorModel cm = this.frames[0].getColorModel();
         ImageTypeSpecifier imageType = new ImageTypeSpecifier(cm, cm.createCompatibleSampleModel(1, 1));
@@ -126,16 +130,7 @@ public class GifSteganography extends BaseSteganography
             for(byte b : buffer)
                 hideByte(b);
 
-        ImageOutputStream ios = new FileImageOutputStream(output);
-        ColorModel cm = this.frames[0].getColorModel();
-        ImageTypeSpecifier imageType = new ImageTypeSpecifier(cm, cm.createCompatibleSampleModel(1, 1));
-        GifSequenceWriter writer = new GifSequenceWriter(ios, imageType, this.delayMS, true);
-
-        for(int x=0; x<this.frames.length; x++)
-            writer.writeToSequence(this.frames[x], this.metadatas[x]);
-
-        writer.close();
-        ios.close();
+        encodeDecodeImageOutputStream(output);
     }
 
     // Extracts the header from the stego image to create the secretInfo field,
@@ -174,7 +169,7 @@ public class GifSteganography extends BaseSteganography
             WritableRaster raster = this.frames[k].getRaster();
             raster.getPixel(j,i,pixel);
             currentByte = String.format("%8s",Integer.toBinaryString(b)).replace(' ', '0');
-            currentByte = currentByte.substring(currentByte.length()-8, currentByte.length());
+            currentByte = currentByte.substring(currentByte.length()-8);
             pixel[0] = embed(pixel[0], currentByte.charAt(l));
             raster.setPixel(j,i,pixel);
             increment();
@@ -195,7 +190,7 @@ public class GifSteganography extends BaseSteganography
             Raster raster = this.frames[k].getRaster();
             raster.getPixel(j,i,pixel);
             currentByte = String.format("%8s", Integer.toBinaryString(pixel[0])).replace(" ", "0");
-            currentByte = currentByte.substring(currentByte.length()-8, currentByte.length());
+            currentByte = currentByte.substring(currentByte.length()-8);
             bit.append(currentByte.charAt(7));
             increment();
         }

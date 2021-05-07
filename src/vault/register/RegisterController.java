@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class RegisterController  implements Initializable {
@@ -47,10 +48,11 @@ public class RegisterController  implements Initializable {
     private Label registerMessageLabel;
 
     @FXML
-    private Button registerRegisterButton;
-
-    @FXML
     private Button registerBackButton;
+
+    public RegisterController(PasswordField registerConfirmPasswordField) {
+        this.registerConfirmPasswordField = registerConfirmPasswordField;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,7 +61,7 @@ public class RegisterController  implements Initializable {
         registerImage.setImage(userImage);
     }
 
-    public void registerRegisterButtonOnAction(ActionEvent event)
+    public void registerRegisterButtonOnAction()
     {
         if(registerFirstNameTextField.getText().isBlank())
             registerMessageLabel.setText("First name isn't entered");
@@ -95,14 +97,14 @@ public class RegisterController  implements Initializable {
             String jsonInputString = "{\"firstName\":\"" + registerFirstNameTextField.getText() + "\",\"lastName\":\"" +registerLastNameTextField.getText()+ "\",\"email\":\"" +registerEmailTextField.getText()+ "\",\"password\":\"" +registerPasswordField.getText()+ "\"}";
 
             try(OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
-                String responseLine = null;
+                String responseLine;
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }
@@ -134,7 +136,7 @@ public class RegisterController  implements Initializable {
         }
     }
 
-    public void registerBackButtonOnAction(ActionEvent event)
+    public void registerBackButtonOnAction()
     {
         Stage stage = (Stage) registerBackButton.getScene().getWindow();
         stage.close();

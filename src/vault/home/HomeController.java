@@ -114,14 +114,14 @@ public class HomeController implements Initializable
     // AES
     private File aesFile;
     private final FileChooser aesFileChooser = new FileChooser();
-    final private static int mBlocksize;
+    final private static int blockSize;
     private static SecretKey secretKey;
 
 
     // Steganography
 
-    // Set cover image from Filechooser and add it to the coverImageView
-    // Also enable steganographic controls which are disbled
+    // Set cover image from File chooser and add it to the coverImageView
+    // Also enable steganographic controls which are disabled
     public void setCoverImage()
     {
         // Choosing the file for cover image
@@ -146,13 +146,13 @@ public class HomeController implements Initializable
             newSecretImage.setDisable(false);
             secretMessageTab.setDisable(false);
             secretDocumentTab.setDisable(false);
-            secretImageTab.setDisable(Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
-            messagePixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
-            documentPixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).toLowerCase().equals("gif"));
+            secretImageTab.setDisable(Utils.getFileExtension(coverImage).equalsIgnoreCase("gif"));
+            messagePixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).equalsIgnoreCase("gif"));
+            documentPixelsPerByteWrapper.setVisible(!Utils.getFileExtension(coverImage).equalsIgnoreCase("gif"));
         }
         else
         {
-            // If not selceted, dispaly alert box
+            // If not selected, display alert box
             AlertBox.error("Error while setting cover image", "Please try again!");
         }
     }
@@ -215,7 +215,7 @@ public class HomeController implements Initializable
         }
     }
 
-    // Set the secret Image using Filechooser and add it to the secretImageView
+    // Set the secret Image using File chooser and add it to the secretImageView
     public void setSecretImage()
     {
         // choose a file for the secretImageView
@@ -275,7 +275,7 @@ public class HomeController implements Initializable
             BaseSteganography img;
             try
             {
-                if (imageExtension.toLowerCase().equals("gif"))
+                if (imageExtension.equalsIgnoreCase("gif"))
                     img = new GifSteganography(coverImage, encryptMessage.isSelected(), compressMessage.isSelected());
                 else
                     img = new ImageSteganography(coverImage, encryptMessage.isSelected(), compressMessage.isSelected(), getToggleGroupValue(messagePixelsPerByte));
@@ -339,7 +339,7 @@ public class HomeController implements Initializable
             if (steganographicImage != null)
             {
                 BaseSteganography img;
-                if (imageExtension.toLowerCase().equals("gif"))
+                if (imageExtension.equalsIgnoreCase("gif"))
                     img = new GifSteganography(coverImage, encryptDocument.isSelected(), compressDocument.isSelected());
                 else
                     img = new ImageSteganography(coverImage, encryptDocument.isSelected(), compressDocument.isSelected(), getToggleGroupValue(documentPixelsPerByte));
@@ -392,13 +392,13 @@ public class HomeController implements Initializable
         String imageExtension = Utils.getFileExtension(steganographicImage);
         HiddenData hiddenData;
 
-        // Init filechooser
+        // Init file chooser
         FileChooser fc = new FileChooser();
         File file;
         try
         {
             // Get Image
-            BaseSteganography img = (imageExtension.toLowerCase().equals("gif")) ?
+            BaseSteganography img = (imageExtension.equalsIgnoreCase("gif")) ?
                     new GifSteganography(steganographicImage) : new ImageSteganography(steganographicImage);
 
             // Set Hidden Data
@@ -425,6 +425,7 @@ public class HomeController implements Initializable
                 if (hiddenData.isCompressed)
                     secret = ZLibCompression.decompress(secret);
 
+                assert secret != null;
                 message = new String(secret, StandardCharsets.UTF_8);
 
                 if (message.length() > 0)
@@ -580,14 +581,7 @@ public class HomeController implements Initializable
             systemClipboard = Clipboard.getSystemClipboard();
         }
 
-        if(systemClipboard.hasString())
-        {
-            pasteMenu.setDisable(false);
-        }
-        else
-        {
-            pasteMenu.setDisable(true);
-        }
+        pasteMenu.setDisable(!systemClipboard.hasString());
 
         if(!secretMessage.getSelectedText().equals(""))
         {
@@ -604,32 +598,11 @@ public class HomeController implements Initializable
             deleteMenu.setDisable(true);
         }
 
-        if(secretMessage.getSelectedText().equals(secretMessage.getText()))
-        {
-            selectAllMenu.setDisable(true);
-        }
-        else
-        {
-            selectAllMenu.setDisable(false);
-        }
+        selectAllMenu.setDisable(secretMessage.getSelectedText().equals(secretMessage.getText()));
 
-        if(secretMessage.isRedoable())
-        {
-            redoMenu.setDisable(false);
-        }
-        else
-        {
-            redoMenu.setDisable(true);
-        }
+        redoMenu.setDisable(!secretMessage.isRedoable());
 
-        if(secretMessage.isUndoable())
-        {
-            undoMenu.setDisable(false);
-        }
-        else
-        {
-            undoMenu.setDisable(true);
-        }
+        undoMenu.setDisable(!secretMessage.isUndoable());
     }
 
     // Function to open the Backend Source Code
@@ -718,8 +691,8 @@ public class HomeController implements Initializable
 
     // RSA
 
-    // RSA Encryprion Method
-    void encyptMethod(ActionEvent event) {
+    // RSA Encryption Method
+    void encryptMethod() {
 
         BigInteger m, n;
         char[] arr;
@@ -764,7 +737,7 @@ public class HomeController implements Initializable
     }
 
     // RSA Decryption Method
-    void decyptMethod(ActionEvent event) {
+    void decryptMethod() {
         BigInteger c, n;
         char[] arr;
 
@@ -900,12 +873,12 @@ public class HomeController implements Initializable
     // Static Variables
     static
     {
-        mBlocksize = 128;
+        blockSize = 128;
         secretKey = null;
         try
         {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            secretKey = kgen.generateKey();
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            secretKey = keyGenerator.generateKey();
         }
         catch (NoSuchAlgorithmException e)
         {
@@ -914,7 +887,7 @@ public class HomeController implements Initializable
     }
 
     // Encrypt a File using AES Encryption
-    protected void encryptFile(ActionEvent event)
+    protected void encryptFile()
     {
         // Init
         initChooseFile();
@@ -946,22 +919,15 @@ public class HomeController implements Initializable
         try
         {
             InputStream fis = new FileInputStream(aesFile);
-            int read = 0;
+            int read;
             if (!outfile.exists())
             {
                 outfile.createNewFile();
             }
-            FileOutputStream encfos = new FileOutputStream(outfile);
-            Cipher encipher = Cipher.getInstance("AES");
-            encipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
-            byte[] block = new byte[mBlocksize];
-            while ((read = fis.read(block,0,mBlocksize)) != -1)
-            {
-                cipheoutstream.write(block,0, read);
-            }
-            cipheoutstream.close();
-            fis.close();
+            FileOutputStream encryptionFOS = new FileOutputStream(outfile);
+            Cipher encryptCipher = Cipher.getInstance("AES");
+            encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            aesCipherOutputStream(fis, encryptionFOS, encryptCipher);
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException e)
         {
@@ -969,8 +935,20 @@ public class HomeController implements Initializable
         }
     }
 
+    private void aesCipherOutputStream(InputStream fis, FileOutputStream encryptionFOS, Cipher encryptCipher) throws IOException {
+        int read;
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(encryptionFOS, encryptCipher);
+        byte[] block = new byte[blockSize];
+        while ((read = fis.read(block,0,blockSize)) != -1)
+        {
+            cipherOutputStream.write(block,0, read);
+        }
+        cipherOutputStream.close();
+        fis.close();
+    }
+
     // AES File Decryption
-    protected void decryptFile (ActionEvent event)
+    protected void decryptFile()
     {
         try
         {
@@ -1001,25 +979,17 @@ public class HomeController implements Initializable
             }
 
             InputStream fis = new FileInputStream(aesFile);
-            int read = 0;
+            int read;
             if (!outfile.exists())
                 outfile.createNewFile();
 
-            // Start Decryprion
-            FileOutputStream encfos = new FileOutputStream(outfile);
+            // Start Decryption
+            FileOutputStream encryptedFOS = new FileOutputStream(outfile);
 
-            Cipher encipher = Cipher.getInstance("AES");
-            encipher.init(Cipher.DECRYPT_MODE, secretKey);
-            CipherOutputStream cipheoutstream = new CipherOutputStream(encfos, encipher);
+            Cipher encryptCipher = Cipher.getInstance("AES");
+            encryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-            byte[] block = new byte[mBlocksize];
-            while ((read = fis.read(block,0,mBlocksize)) != -1)
-            {
-                cipheoutstream.write(block,0, read);
-            }
-
-            cipheoutstream.close();
-            fis.close();
+            aesCipherOutputStream(fis, encryptedFOS, encryptCipher);
 
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException | InvalidKeyException e)
@@ -1029,7 +999,7 @@ public class HomeController implements Initializable
     }
 
     // Save the Key locally
-    public void saveKey(ActionEvent event)
+    public void saveKey()
     {
         try
         {
@@ -1053,9 +1023,9 @@ public class HomeController implements Initializable
                 outfile.createNewFile();
             }
 
-            FileOutputStream encfos = new FileOutputStream(outfile);
-            encfos.write(secretKey.getEncoded());
-            encfos.close();
+            FileOutputStream encryptedFOS = new FileOutputStream(outfile);
+            encryptedFOS.write(secretKey.getEncoded());
+            encryptedFOS.close();
 
         }
         catch (IOException e)
@@ -1071,7 +1041,7 @@ public class HomeController implements Initializable
     }
 
     // Use a saved Key
-    public void useKey(ActionEvent event)
+    public void useKey()
     {
         try
         {
@@ -1109,12 +1079,12 @@ public class HomeController implements Initializable
     }
 
     // Function to generate a new key
-    public void generateNewKey(ActionEvent event)
+    public void generateNewKey()
     {
         try
         {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            secretKey = kgen.generateKey();
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            secretKey = keyGenerator.generateKey();
 
         }
         catch (NoSuchAlgorithmException e)
@@ -1125,7 +1095,7 @@ public class HomeController implements Initializable
     }
 
     // When Logout Button pressed go back to login
-    public void loginButtonOnAction(ActionEvent event)
+    public void loginButtonOnAction()
     {
         try
         {

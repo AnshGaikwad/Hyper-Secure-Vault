@@ -60,8 +60,8 @@ public class HiddenData
                 for (int i = 2; i < 4; i++) {
                     String w = String.format("%8s", Integer.toBinaryString(header[i])).replace(' ', '0');
                     String h = String.format("%8s", Integer.toBinaryString(header[i + 2])).replace(' ', '0');
-                    width.append(w.substring(w.length() - 8, w.length()));
-                    height.append(h.substring(h.length() - 8, h.length()));
+                    width.append(w.substring(w.length() - 8));
+                    height.append(h.substring(h.length() - 8));
                 }
                 this.width = Integer.parseInt(width.toString(), 2);
                 this.height = Integer.parseInt(height.toString(), 2);
@@ -76,7 +76,7 @@ public class HiddenData
             for(int i=4; i<7; i++)
             {
                 String l = String.format("%8s",Integer.toBinaryString(header[i])).replace(' ','0');
-                length.append(l.substring(l.length() - 8, l.length()));
+                length.append(l.substring(l.length() - 8));
             }
             this.length = Integer.parseInt(length.toString(), 2);
         }
