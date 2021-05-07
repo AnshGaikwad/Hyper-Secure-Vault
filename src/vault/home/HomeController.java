@@ -286,35 +286,54 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Encodes a document in an image after compressing then encrypting it (if enabled),
-     * then calls either {@link ImageSteganography} or {@link GifSteganography} based
-     * on the cover image extension.
-     */
-    public void encodeDocumentInImage() {
+    // Encodes a document in an image after compressing then encrypting it (if enabled),
+    // then calls either ImageSteganography or GifSteganography based
+    // on the cover image extension.
+    public void encodeDocumentInImage()
+    {
+        // Get file extension
         String secretFileExtension = Utils.getFileExtension(secretDocument);
-        try {
-            if(compressDocument.isSelected() || encryptDocument.isSelected()) {tempFile = File.createTempFile("temp", "." + secretFileExtension); tempFile.deleteOnExit();}
-            if(compressDocument.isSelected() && encryptDocument.isSelected()) {
+        try
+        {
+            // Perform Encoding
+            if(compressDocument.isSelected() || encryptDocument.isSelected())
+            {
+                tempFile = File.createTempFile("temp", "." + secretFileExtension);
+                tempFile.deleteOnExit();
+            }
+
+            if(compressDocument.isSelected() && encryptDocument.isSelected())
+            {
                 File auxFile = File.createTempFile("aux", "."+secretFileExtension); auxFile.deleteOnExit();
                 ZLibCompression.compress(secretDocument, auxFile);
                 AESEncryption.encrypt(auxFile, tempFile, password);
-            }else{
+            }
+            else
+            {
                 if(compressDocument.isSelected())
                     ZLibCompression.compress(secretDocument, tempFile);
                 else if(encryptDocument.isSelected())
                     AESEncryption.encrypt(secretDocument, tempFile, password);
             }
-            if(compressDocument.isSelected() || encryptDocument.isSelected()) { secretDocument = tempFile; }
+            if(compressDocument.isSelected() || encryptDocument.isSelected())
+            {
+                secretDocument = tempFile;
+            }
+
             String imageExtension = Utils.getFileExtension(coverImage).toLowerCase();
             imageExtension = (imageExtension.matches("jpg|jpeg")) ? "png" : imageExtension;
+
+            // Save file path
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter(
                             imageExtension.toUpperCase(),
                             "*." + imageExtension));
             steganographicImage = fc.showSaveDialog(null);
-            if (steganographicImage != null) {
+
+            // if image selected, apply steganography
+            if (steganographicImage != null)
+            {
                 BaseSteganography img;
                 if (imageExtension.toLowerCase().equals("gif"))
                     img = new GifSteganography(coverImage, encryptDocument.isSelected(), compressDocument.isSelected());
@@ -323,109 +342,144 @@ public class HomeController implements Initializable {
                 img.encode(secretDocument, steganographicImage);
                 AlertBox.information("Encoding Successful!", "Document encoded successfully in " + steganographicImage.getName() + ".", steganographicImage);
             }
-        } catch (IOException | CannotEncodeException | UnsupportedImageTypeException e) {
+        }
+        catch (IOException | CannotEncodeException | UnsupportedImageTypeException e)
+        {
             e.printStackTrace();
             AlertBox.error("Error while encoding", e.getMessage());
         }
     }
 
-    /**
-     * Encodes an image in another image using {@link ImageInImageSteganography}.
-     */
-    public void encodeImageInImage() {
+    // Encodes an image in another image using ImageInImageSteganography.
+    public void encodeImageInImage()
+    {
+        // Save file path image
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter(
                         "PNG Image",
                         "*.png"));
         steganographicImage = fc.showSaveDialog(null);
-        if (steganographicImage != null) {
-            try {
+
+        // if image is selected, apply image in image steganography
+        if (steganographicImage != null)
+        {
+            try
+            {
                 ImageInImageSteganography img = new ImageInImageSteganography(coverImage, getToggleGroupValue(pixelsPerPixel));
                 img.encode(secretImage, steganographicImage);
                 AlertBox.information("Encoding Successful!", "Image " + secretImage.getName() + " encoded successfully in " + steganographicImage.getName() + ".", steganographicImage);
-            } catch (IOException | CannotEncodeException | UnsupportedImageTypeException e) {
+            }
+            catch (IOException | CannotEncodeException | UnsupportedImageTypeException e)
+            {
                 e.printStackTrace();
                 AlertBox.error("Error while encoding", e.getMessage());
             }
         }
     }
 
-    /**
-     * Handles decoding the image by decoding the data using the appropriate class
-     * based on the extension ({@link ImageSteganography} or {@link GifSteganography}),
-     * then constructs an {@link HiddenData} object from the image header,
-     * then performs decoding and decompression (if enabled) to return the secret data.
-     */
-    public void decodeImage() {
+    // Handles decoding the image by decoding the data using the appropriate class
+    // based on the extension ImageSteganography or GifSteganography,
+    // then constructs an HiddenData object from the image header,
+    // then performs decoding and decompression (if enabled) to return the secret data.
+    public void decodeImage()
+    {
+        // Get image extention and hidden data which has encoding, extension information and other metadata
         String imageExtension = Utils.getFileExtension(steganographicImage);
         HiddenData hiddenData;
+
+        // Init filechooser
         FileChooser fc = new FileChooser();
         File file;
-        try {
-            BaseSteganography img = (imageExtension.toLowerCase().equals("gif")) ? new GifSteganography(steganographicImage) : new ImageSteganography(steganographicImage);
+        try
+        {
+            // Get Image
+            BaseSteganography img = (imageExtension.toLowerCase().equals("gif")) ?
+                    new GifSteganography(steganographicImage) : new ImageSteganography(steganographicImage);
+
+            // Set Hidden Data
             hiddenData = new HiddenData(img.getHeader());
             fc.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter(
                             hiddenData.extension.toUpperCase(),
                             "*." + hiddenData.extension));
 
-            if (hiddenData.format == DataFormat.MESSAGE) {
+            // Start Decoding
+            if (hiddenData.format == DataFormat.MESSAGE)
+            {
                 tempFile = File.createTempFile("message", ".txt");
                 img.decode(tempFile);
                 byte[] secret = Files.readAllBytes(tempFile.toPath());
                 String message;
-                if (hiddenData.isEncrypted) {
+
+                if (hiddenData.isEncrypted)
+                {
                     password = PasswordPrompt.display(PasswordType.DECRYPT);
                     secret = AESEncryption.decrypt(secret, password);
                 }
+
                 if (hiddenData.isCompressed)
                     secret = ZLibCompression.decompress(secret);
+
                 message = new String(secret, StandardCharsets.UTF_8);
+
                 if (message.length() > 0)
                     AlertBox.information("Decoding successful!", "Here is the secret message:", message);
+
                 tempFile.deleteOnExit();
             }
 
-            else if(hiddenData.format == DataFormat.DOCUMENT) {
+            else if(hiddenData.format == DataFormat.DOCUMENT)
+            {
                 file = fc.showSaveDialog(null);
-                if (hiddenData.isCompressed || hiddenData.isEncrypted) {
+
+                if (hiddenData.isCompressed || hiddenData.isEncrypted)
+                {
                     tempFile = File.createTempFile("temp", "." + hiddenData.extension);
                     tempFile.deleteOnExit();
                     img.decode(tempFile);
                 }
-                if (hiddenData.isEncrypted) {
+                if (hiddenData.isEncrypted)
+                {
                     password = PasswordPrompt.display(PasswordType.DECRYPT);
                 }
-                if (hiddenData.isEncrypted && hiddenData.isCompressed) {
+                if (hiddenData.isEncrypted && hiddenData.isCompressed)
+                {
                     File auxFile = File.createTempFile("aux", "." + hiddenData.extension);
                     auxFile.deleteOnExit();
                     AESEncryption.decrypt(tempFile, auxFile, password);
                     ZLibCompression.decompress(auxFile, file);
-                } else {
+                }
+                else
+                {
                     if (hiddenData.isCompressed)
                         ZLibCompression.decompress(tempFile, file);
+
                     else if (hiddenData.isEncrypted)
                         AESEncryption.decrypt(tempFile, file, password);
+
                     else
                         img.decode(file);
+
                 }
                 if (file != null && file.length() > 0)
                     AlertBox.information("Decoding Successful!", "Document decoded in " + file.getName(), file);
             }
 
-            else if(hiddenData.format == DataFormat.IMAGE){
+            else if(hiddenData.format == DataFormat.IMAGE)
+            {
                 ImageInImageSteganography imgInImg = new ImageInImageSteganography(steganographicImage);
                 file = fc.showSaveDialog(null);
                 imgInImg.decode(file);
                 AlertBox.information("Decoding Successful!", "Image decoded in " + file.getName(), file);
             }
-        } catch (IOException | CannotDecodeException | UnsupportedImageTypeException e) {
+        }
+        catch (IOException | CannotDecodeException | UnsupportedImageTypeException e)
+        {
             e.printStackTrace();
             AlertBox.error("Error while decoding", e.getMessage());
         }
     }
-
 
     /**
      * Gets the encryption mode from the password prompt.

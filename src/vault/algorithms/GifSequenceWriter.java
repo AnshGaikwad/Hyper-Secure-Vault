@@ -18,35 +18,29 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.Iterator;
 
-/**
- * The {@code GifSequenceWriter} class is used by {@link vault.algorithms.GifSteganography} class
- * to create a GIF89a image based on an array of <code>BufferedImage</code> and an array of <code>IIOMetadata</code>.
- *
- * @author Elliot Kroo (2009-04-25).
- * @author Feres Gaaloul (2018-07).
- */
+// Creates a GIF89a image based on an array of BufferedImage and an array of IIOMetadata
 class GifSequenceWriter {
 
-    /** Used to write a gif image. */
+    // Used to write a gif image
     private ImageWriter gifWriter;
-    /** Describes how the gif will be written. */
+
+    // Describes how the gif will be written
     private ImageWriteParam imageWriteParam;
 
-    /**
-     * Creates a new GifSequenceWriter
-     *
-     * @author                    Elliot Kroo (elliot[at]kroo[dot]net)
-     * @param outputStream        the ImageOutputStream to be written to
-     * @param imageTypeSpecifier  the ImageTypeSpecifier of the image
-     * @param timeBetweenFramesMS the time between frames in milliseconds
-     * @param loopContinuously    whether the gif should loop repeatedly
-     * @throws IIOException       if no gif ImageWriters are found.
-     */
-    public GifSequenceWriter(
+     // Creates a new GifSequenceWriter
+     // outputStream        => the ImageOutputStream to be written to
+     // imageTypeSpecifier  => the ImageTypeSpecifier of the image
+     // timeBetweenFramesMS => the time between frames in milliseconds
+     // loopContinuously    => whether the gif should loop repeatedly
+    public GifSequenceWriter
+    (
             ImageOutputStream outputStream,
             ImageTypeSpecifier imageTypeSpecifier,
             int timeBetweenFramesMS,
-            boolean loopContinuously) throws IOException {
+            boolean loopContinuously
+    ) throws IOException
+    {
+
         // my method to create a writer
         gifWriter = getWriter();
         imageWriteParam = gifWriter.getDefaultWriteParam();
@@ -89,6 +83,7 @@ class GifSequenceWriter {
 
         child.setUserObject(new byte[]{0x1, (byte) (loop & 0xFF),
                 (byte) ((loop >> 8) & 0xFF)});
+
         appEntensionsNode.appendChild(child);
 
         imageMetaData.setFromTree(metaFormatName, root);
@@ -98,30 +93,24 @@ class GifSequenceWriter {
         gifWriter.prepareWriteSequence(null);
     }
 
-    /**
-     * Returns the first available GIF ImageWriter using
-     * ImageIO.getImageWritersBySuffix("gif").
-     *
-     * @return              a GIF ImageWriter object.
-     * @throws IIOException if no GIF image writers are returned.
-     */
-    private static ImageWriter getWriter() throws IIOException {
+    // Returns the first available GIF ImageWriter using
+    // ImageIO.getImageWritersBySuffix("gif")
+    private static ImageWriter getWriter() throws IIOException
+    {
         Iterator<ImageWriter> iter = ImageIO.getImageWritersBySuffix("gif");
-        if (!iter.hasNext()) {
+        if (!iter.hasNext())
+        {
             throw new IIOException("No GIF Image Writers Exist");
-        } else {
+        } else
+        {
             return iter.next();
         }
     }
 
-    /**
-     * Adds a frame to the gif sequence.
-     *
-     * @param img                   frame to add to the sequence
-     * @param originalImageMetaData metadata of the frame to add
-     * @throws IOException          if an error occurs while writing a frame to the sequence.
-     */
-    public void writeToSequence(RenderedImage img, IIOMetadata originalImageMetaData) throws IOException {
+    // Adds a frame to the gif sequence.
+    public void writeToSequence(RenderedImage img, IIOMetadata originalImageMetaData)
+            throws IOException
+    {
         gifWriter.writeToSequence(
                 new IIOImage(
                         img,
@@ -130,12 +119,9 @@ class GifSequenceWriter {
                 imageWriteParam);
     }
 
-    /**
-     * Close this GifSequenceWriter object. This does not close the underlying
-     * stream, just finishes off the GIF.
-     *
-     * @throws IOException if an error occurs while closing the gif sequence.
-     */
+
+    // Close this GifSequenceWriter object. This does not close the underlying
+    // stream, just finishes off the GIF.
     public void close() throws IOException {
         gifWriter.endWriteSequence();
     }
