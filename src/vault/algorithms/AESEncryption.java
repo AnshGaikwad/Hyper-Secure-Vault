@@ -15,85 +15,80 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-/**
- * The {@code AESEncryption} class handles the encryption/decryption operation of either a byte array or a file
- * to ensure more security for the steganographic process using password-based AES encryption.
- * <p>
- * This class uses these default encryption parameters :
- * <ul>
- *      <li>Cipher Algorithm : AES (Advanced Encryption Standard)</li>
- *      <li>Cipher Algorithm Mode : CBC (Cipher Block Chaining)</li>
- *      <li>Cipher Algorithm Padding : PKCS5Padding</li>
- *      <li>Cipher Block Size : 128 bit (16 bytes)</li>
- * </ul>
- */
+// Handles the encryption/decryption operation of either a byte array or a file
+// To ensure more security for the steganographic process using password-based AES encryption.
+// Cipher Algorithm : AES (Advanced Encryption Standard)</li>
+// Cipher Algorithm Mode : CBC (Cipher Block Chaining)</li>
+// Cipher Algorithm Padding : PKCS5Padding</li>
+// Cipher Block Size : 128 bit (16 bytes)</
 public class AESEncryption {
 
-    /** Algorithm used to hash the password given by the user. */
+    // Algorithm used to hash the password given by the user
     private static final String HASH_ALGORITHM = "SHA-1";
-    /** Algorithm used to cipher the data. */
+
+    // Algorithm used to cipher the data
     private static final String CIPHER_ALGORITHM = "AES";
-    /** Parameters of the algorithm used to cipher the data. */
+
+    // Parameters of the algorithm used to cipher the data
     private static final String CIPHER_SPEC = "AES/CBC/PKCS5Padding";
-    /** Size of the cipher block (128 bit AES = 16 bytes). */
+
+    // Size of the cipher block (128 bit AES = 16 bytes)
     private static final int CIPHER_BLOCK_SIZE = 16;
-    /** Secret key used to cipher the data. */
+
+    // Secret key used to cipher the data
     private static SecretKeySpec secretKey;
-    /** Needed to generate the Initialisation Vector. */
-    private static SecureRandom rnd = new SecureRandom();
-    /** Initialisation vector needed by the Cipher Block Chaining encryption mode. */
+
+    // Needed to generate the Initialisation Vector
+    private static final SecureRandom rnd = new SecureRandom();
+
+    // Initialisation vector needed by the Cipher Block Chaining encryption mode
     private static final IvParameterSpec iv = new IvParameterSpec(rnd.generateSeed(CIPHER_BLOCK_SIZE));
-    /** Size of the buffer used to cipher a file by chucks. */
+
+    // Size of the buffer used to cipher a file by chucks
     private static final int BUF_SIZE = 1024;
 
-    /**
-     * Hashes the given password using SHA-1 hashing algorithm
-     * then uses the first 16 characters of the hashed password
-     * to generate the AESEncryption class secret encryption key.
-     *
-     * @param myKey password given by the user to encrypt the data
-     */
-    private static void setKey(String myKey){
+    // Hashes given password using SHA-1
+    // then uses the first 16 characters of the hashed password
+    // to generate the AESEncryption class secret encryption key
+    // Param myKey => Password given by user
+    private static void setKey(String myKey)
+    {
         MessageDigest sha;
         byte[] key = myKey.getBytes(StandardCharsets.UTF_8);
-        try{
+        try
+        {
             sha = MessageDigest.getInstance(HASH_ALGORITHM);
             key = sha.digest(key);
             key = Arrays.copyOf(key, CIPHER_BLOCK_SIZE);
             secretKey = new SecretKeySpec(key, CIPHER_ALGORITHM);
-        }catch (GeneralSecurityException e){
+        }
+        catch (GeneralSecurityException e)
+        {
             e.printStackTrace();
             AlertBox.error("Error while setting key", e.getMessage());
         }
     }
 
-    /**
-     * Encrypts a given byte array using AES encryption.
-     *
-     * @param input byte array to encrypt
-     * @param myKey encryption password
-     * @return      a byte array with the encrypted data.
-     */
-    public static byte[] encrypt(byte[] input, String myKey){
-        try{
+    // Encrypts byte array using AES
+    public static byte[] encrypt(byte[] input, String myKey)
+    {
+        try
+        {
             setKey(myKey);
             Cipher cipher = Cipher.getInstance(CIPHER_SPEC);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
             return cipher.doFinal(input);
-        }catch (GeneralSecurityException e){
+        }
+        catch (GeneralSecurityException e)
+        {
             e.printStackTrace();
             AlertBox.error("Error while encrypting", e.getMessage());
         }
         return null;
     }
 
-    /**
-     * Encrypts a given file into another file using AES encryption.
-     *
-     * @param input  file to encrypt
-     * @param output file to which with encrypted data will be written
-     * @param myKey  encryption password
-     */
+    // Encrypts a given file into another file using AES encryption
+    // input => Input File; output => Output File
     public static void encrypt(File input, File output, String myKey){
         try{
             setKey(myKey);
@@ -146,24 +141,22 @@ public class AESEncryption {
         }
     }
 
-    /**
-     * Ciphers a file into another file in chunks using a buffer for reading the file.
-     *
-     * @param ci                        cryptographic cipher for encryption or decryption
-     * @param input                     file before cryptographic operation
-     * @param output                    file after cryptographic operation
-     * @throws IOException              if an error occurs when reading or writing the file streams.
-     * @throws GeneralSecurityException if an error is related to the cipher operation (ex : wrong encryption password).
-     */
-    private static void process(Cipher ci, File input, File output) throws IOException, GeneralSecurityException{
+    // Ciphers a file into another file in chunks using a buffer for reading the file
+    // GeneralSecurityException => if an error is related to the cipher operation (ex : wrong encryption password
+    private static void process(Cipher ci, File input, File output) throws IOException, GeneralSecurityException
+    {
         try (FileInputStream fis = new FileInputStream(input);
-             FileOutputStream fos = new FileOutputStream(output)) {
-                byte[] ibuf = new byte[BUF_SIZE];
-                int len;
-                while ((len = fis.read(ibuf)) != -1) {
-                    byte[] obuf = ci.update(ibuf, 0, len);
-                    if ( obuf != null ) fos.write(obuf);
-                }
+             FileOutputStream fos = new FileOutputStream(output))
+        {
+            byte[] ibuf = new byte[BUF_SIZE];
+            int len;
+
+            while ((len = fis.read(ibuf)) != -1)
+            {
+                byte[] obuf = ci.update(ibuf, 0, len);
+                if ( obuf != null ) fos.write(obuf);
+            }
+
             byte[] obuf = ci.doFinal();
             if ( obuf != null ) fos.write(obuf);
         }
