@@ -759,7 +759,7 @@ public class HomeController implements Initializable
 
             nLabel.setText("n = " + p * q);
             fLabel.setText("φ(n) = " + eulersTotientFunction());
-            dLabel.setText("d = " + ExtendedEuclidAlgorithm());
+            dLabel.setText("d = " + extendedEuclidAlgorithm());
         }
     }
 
@@ -790,7 +790,7 @@ public class HomeController implements Initializable
             q = Integer.parseInt(qField.getText());
             e = Integer.parseInt(eField.getText());
 
-            int d = ExtendedEuclidAlgorithm();
+            int d = extendedEuclidAlgorithm();
 
             n = new BigInteger(String.valueOf(p * q));
 
@@ -805,7 +805,7 @@ public class HomeController implements Initializable
 
             nLabel.setText("n = " + p * q);
             fLabel.setText("φ(n) = " + eulersTotientFunction());
-            dLabel.setText("d = " + ExtendedEuclidAlgorithm());
+            dLabel.setText("d = " + extendedEuclidAlgorithm());
 
         }
 
@@ -819,7 +819,7 @@ public class HomeController implements Initializable
     }
 
     // Extended Euclidean algorithm for finding 'd' value
-    public static int ExtendedEuclidAlgorithm() {
+    public static int extendedEuclidAlgorithm() {
 
         int r0, r1, s0, s1, t0, t1, q, a, b, f;
         f = eulersTotientFunction();
