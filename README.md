@@ -81,8 +81,8 @@ Hyper Secure Platform provides a Cloud-Based Data storage platform for organizat
 Currently, the cloud integration is about to be done. Though I wasn't gonna leak my Cloud Credentials, I thought about making this Repository public now itself.
 
 <p align="center">
-  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/login.PNG" alt="Logo" width="480" height="320">
-  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/register.PNG" alt="Logo" width="480" height="320">
+  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/login.PNG" alt="Logo" width="325" height="250">
+  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/register.PNG" alt="Logo" width="325" height="250">
 </p>
 
 Above you can see the login and registration UI which I have implemented using JavaFX, it is pretty basic, I agree, more advanced UI can be done.
@@ -94,8 +94,8 @@ Above you can see the login and registration UI which I have implemented using J
 This is the main feature of the project i.e. Steganography implemented, using the LSB algorithm. I have implemented three types of Steganography: embedding Text Message, Documents, and Images, which is again encrypted by AES and compressed by Zlib if the option is enabled. Also, the option to choose pixel size is included to focus on quality or size as per the user wishes.
 
 <p align="center">
-  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/RSA.PNG" alt="Logo" width="480" height="320">
-  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/aes.PNG" alt="Logo" width="480" height="320">
+  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/RSA.PNG" alt="Logo" width="325" height="250">
+  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/aes.PNG" alt="Logo" width="325" height="250">
 </p>
 
 The above two are optional features that I added just I wanted to learn how they work and implement them. The right-hand side is RSA Cipher which encrypts text using RSA and the left-hand side one is AES 128 bit file encryption in which we can use and save the key and decrypt the file whenever we needed.
