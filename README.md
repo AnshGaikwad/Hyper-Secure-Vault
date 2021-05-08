@@ -88,7 +88,7 @@ Currently, the cloud integration is about to be done. Though I wasn't gonna leak
 Above you can see the login and registration UI which I have implemented using JavaFX, it is pretty basic, I agree, more advanced UI can be done.
 
 <p align="center">
-  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/steganography.PNG" alt="Logo" width="960" height="640">
+  <img src="https://github.com/AnshGaikwad/Hyper-Secure-Vault/blob/main/images/steganography.PNG" alt="Logo" width="750" height="500">
 </p>
 
 This is the main feature of the project i.e. Steganography implemented, using the LSB algorithm. I have implemented three types of Steganography: embedding Text Message, Documents, and Images, which is again encrypted by AES and compressed by Zlib if the option is enabled. Also, the option to choose pixel size is included to focus on quality or size as per the user wishes.
