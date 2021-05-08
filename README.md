@@ -68,6 +68,8 @@ Or you can just clone it through [Android Studio](https://developer.android.com/
 
 After cloning, you can follow the [YouTube tutorial by Bro Code](https://youtu.be/Ope4icw6bVk) to set up Java Fx.
 
+To use this application, you will need to execute the backend code on your local system the Repo link can be found [here](https://github.com/AnshGaikwad/Hyper-Secure-Vault-Backend). The Backend hasn't been yet hosted on a cloud.
+
 <!-- USAGE -->
 ## Usage
 
